@@ -3,10 +3,10 @@
 ### Table of Contents
 - [Introduction to JCL](#Introduction to JCL)
 - [JCL Structure and Basic Statements](#)
-3.	Dataset Handling in JCL
-4.	Procedures and Symbolic Parameters
-5.	Conditional Execution in JCL
-6.	JCL Utilities
+- [[Dataset Handling in JCL](#)
+-	[Procedures and Symbolic Parameters](#)
+-	[Conditional Execution in JCL](#)
+-	[JCL Utilities](#)
 o	IEFBR14
 o	IEBGENER
 o	IEBCOPY
@@ -17,9 +17,9 @@ o	KSDS
 o	ESDS
 o	RRDS
 o	LSDS
-8.	Error Handling and Debugging
-9.	Real-world Scenarios
-10.	Best Practices
+-	[Error Handling and Debugging](#)
+-	[Real-world Scenarios](   #  ) 
+- [Best Practices](#)
 
 
 
