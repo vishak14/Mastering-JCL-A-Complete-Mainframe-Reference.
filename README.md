@@ -34,7 +34,7 @@ A JCL script is typically divided into three main parts:
 •	DD Statement(s)    – Defines input/output resources (datasets, SYSOUT, etc.) for each step.
 Note: Each job can have maximum of 255 steps, and each step can have multiple DD statements associated with it.
 
- ** JOB Statement: ** The JOB statement is the first and mandatory statement in every JCL job, identifying the job to the operating system. It provides essential control information such as job name, accounting details, message options, and execution parameters. This statement allows JES (Job Entry Subsystem) to schedule, manage, and track the job through the system. 
+ **JOB Statement:** The JOB statement is the first and mandatory statement in every JCL job, identifying the job to the operating system. It provides essential control information such as job name, accounting details, message options, and execution parameters. This statement allows JES (Job Entry Subsystem) to schedule, manage, and track the job through the system. 
 Used to define:
 - Job identity
 - Job class
@@ -43,7 +43,7 @@ Used to define:
 
 ### Syntax Example:
 
-//MYJOB JOB (ACCT),'SAMPLE JOB',CLASS=A,MSGCLASS=X,MSGLEVEL=(1,1)
+`//MYJOB JOB (ACCT),'SAMPLE JOB',CLASS=A,MSGCLASS=X,MSGLEVEL=(1,1)`
 
 Parameter	Description	Example	Notes
 jobname	Name of the job (1–8 characters)	MYJOB	First character must be alphabetic or national ($, #, @).
