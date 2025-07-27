@@ -1,9 +1,9 @@
 # Mastering JCL A Complete Mainframe Reference
 ## Job Control Language
 ### Table of Contents
-- [Introduction to JCL](#)
-- [JCL Structure and Basic Statements](#)
-- [[Dataset Handling in JCL](#)
+- [Introduction to JCL](#introduction-to-jCL)
+- [JCL Structure and Basic Statements](#jCL-structure-and-basic-statements)
+- [[Dataset Handling in JCL](#dataset-handling-in-jCL)
 -	[Procedures and Symbolic Parameters](#)
 -	[Conditional Execution in JCL](#)
 -	[JCL Utilities](#)
