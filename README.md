@@ -1048,4 +1048,4 @@ Limit Use of /* (Null Statements)
 Keep Dataset Names and Parameters Within Syntax Limits
 •	JCL keywords, dataset names, and parameters must follow format restrictions (e.g., 8-character step names, 44-character DSNs).
 
-<img width="468" height="605" alt="image" src="https://github.com/user-attachments/assets/4f141b9f-a406-462e-b980-8565aa90d372" />
+
