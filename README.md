@@ -1,7 +1,6 @@
-# Mastering-JCL-A-Complete-Mainframe-Reference.
-Mainframe JCL Demystified: A Practical Guide
-Job Control Language
-Table of Contents
+# Mastering JCL A Complete Mainframe Reference
+## Job Control Language
+### Table of Contents
 1.	Introduction to JCL
 2.	JCL Structure and Basic Statements
 3.	Dataset Handling in JCL
@@ -24,7 +23,7 @@ o	LSDS
 
 
 
-1. Introduction to JCL
+- 1. Introduction to JCL
 Job Control Language (JCL) is a scripting language used on IBM mainframe systems to instruct the operating system on how to run a batch job or start a subsystem. It is primarily used with z/OS, the flagship IBM mainframe operating system, and plays a critical role in mainframe automation and workload management.
 JCL doesn't execute business logic directly — instead, it acts as a job orchestration tool, managing the execution of programs (like COBOL, PL/I, Assembler, or utilities like SORT and IDCAMS), allocating system resources (like datasets, memory, and CPU time), and handling job status communication.
 
