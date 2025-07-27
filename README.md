@@ -1,22 +1,22 @@
 # Mastering JCL A Complete Mainframe Reference
 ## Job Control Language
 ### Table of Contents
-- [Introduction to JCL](#Introduction to JCL)
+- [Introduction to JCL](#)
 - [JCL Structure and Basic Statements](#)
 - [[Dataset Handling in JCL](#)
 -	[Procedures and Symbolic Parameters](#)
 -	[Conditional Execution in JCL](#)
 -	[JCL Utilities](#)
-o	IEFBR14
-o	IEBGENER
-o	IEBCOPY
-o	IDCAMS
-o	SORT
+ 	- IEFBR14
+ 	- IEBGENER
+ 	- IEBCOPY
+ 	- IDCAMS
+ 	- SORT
 -	[VSAM in Detail](#)
-o	KSDS
-o	ESDS
-o	RRDS
-o	LSDS
+ 	- KSDS
+ 	- ESDS
+ 	- RRDS
+ 	- LSDS
 -	[Error Handling and Debugging](#)
 -	[Real-world Scenarios](   #  ) 
 - [Best Practices](#)
