@@ -626,7 +626,7 @@ SYSUT2 is the output PDS, which must already exist.
 
 SYSIN contains the COPY statement, specifying the input (INDD) and output (OUTDD) DD names.
 This is a basic copy operation; IEBCOPY can also be used for selective member copy, renaming, or compression.
-SORT (DFSORT/SYNCSORT)
+### SORT (DFSORT/SYNCSORT)
 SORT is a utility in JCL used to sort, merge, or copy data in sequential datasets based on specified field values. It supports various control statements to define sort keys, filtering criteria, and output formatting. SORT is widely used for organizing data, eliminating duplicates, and preparing reports or inputs for other programs. 
 Option	Purpose	Example	Explanation
 SORT FIELDS=	Specifies the fields and order to sort the records.	SORT FIELDS=(1,5,CH,A)	Sort records starting at position 1, length 5, character type, ascending order.
@@ -681,7 +681,7 @@ Use Case	Indexed files (e.g., customer DB)	Logs, sequential data (e.g., audit lo
 Support for Alternate Index	Yes	Yes (less common)	No	No
 
 
-KSDS (Key-Sequenced Data Set) is a type of VSAM dataset where each record is stored and accessed using a unique key. It maintains an index that allows both sequential and direct access based on the key value, making it ideal for applications requiring fast lookups or sorted data. Records are automatically stored in key sequence, and new records are inserted in the correct order, not just appended. KSDS supports dynamic insert, update, and delete operations, providing flexibility for frequently changing data. It is commonly used for databases, customer master files, and systems requiring high-performance indexed access
+### KSDS (Key-Sequenced Data Set) is a type of VSAM dataset where each record is stored and accessed using a unique key. It maintains an index that allows both sequential and direct access based on the key value, making it ideal for applications requiring fast lookups or sorted data. Records are automatically stored in key sequence, and new records are inserted in the correct order, not just appended. KSDS supports dynamic insert, update, and delete operations, providing flexibility for frequently changing data. It is commonly used for databases, customer master files, and systems requiring high-performance indexed access
 
 To define a KSDS (Key-Sequenced Data Set) in JCL using IDCAMS (Access Method Services), you typically use the DEFINE CLUSTER command with a combination of parameters. 
 
@@ -762,7 +762,7 @@ DEFINE CLUSTER (NAME(MY.KSDS.FILE) -
 /*
 
 
-ESDS: 
+### ESDS: 
 An Entry-Sequenced Data Set (ESDS) stores records in the exact order they are written, with each record assigned a unique Relative Byte Address (RBA). It does not support keys, so records cannot be retrieved directly by a key—access is typically sequential or by RBA. New records are always appended at the end; deleted records are not physically removed, leading to potential space inefficiency. ESDS supports both fixed and variable-length records, and is useful for logs, audit trails, or write-once-read-many use cases. Access to specific records via RBA must be managed externally by the application.
  
 Basic Syntax:
@@ -817,7 +817,7 @@ DEFINE CLUSTER (NAME(MY.ESDS.FILE) -
 •	No KEYS or INDEX section is used (unlike KSDS).
 •	ESDS supports both fixed and variable-length records.
 •	You can access records via RBA, but you must manage the RBAs yourself.
-RRDS:
+### RRDS:
 Relative Record Data Set (RRDS) stores records at fixed positions based on a Relative Record Number (RRN), starting from 1. Each record is of fixed length, and there is no concept of keys or indexing. Records can be accessed randomly by RRN or sequentially, making it suitable for applications like tables or slots. New records must be written to specific RRNs; they are not automatically appended like in ESDS. RRDS is efficient when record positions are known or predefined, but lacks flexibility for variable-length data or dynamic insertion.
 Here’s a JCL example to define an RRDS using IDCAMS, along with an explanation of the parameters:
 RRDS Definition JCL:
@@ -852,7 +852,7 @@ Key Notes:
 •	No key-based access is available (unlike KSDS).
 •	You can write, read, update, or delete records by RRN.
 
-LSDS
+### LSDS
 A Linear Sequential Data Set (LSDS) is a type of VSAM data set that stores data as a continuous stream of bytes, without any inherent record boundaries. It is primarily used as a memory-mapped file and is accessed by byte offsets, not by records or keys. LSDS is often used by CICS for storing system data like temporary storage queues or control blocks. It provides no support for record-level operations—you must manage structure and segmentation in your application. Because of its flexibility and low-level control, LSDS is suitable for advanced, system-level use cases rather than general data storage.
 Here’s a JCL example to define an LSDS (Linear Sequential Data Set) using IDCAMS, along with an explanation of the key parameters:
 
