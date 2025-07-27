@@ -12,7 +12,7 @@ o	IEBGENER
 o	IEBCOPY
 o	IDCAMS
 o	SORT
-7.	VSAM in Detail
+-	[VSAM in Detail](#)
 o	KSDS
 o	ESDS
 o	RRDS
@@ -23,7 +23,7 @@ o	LSDS
 
 
 
-## Introduction to JCL
+# Introduction to JCL
 Job Control Language (JCL) is a scripting language used on IBM mainframe systems to instruct the operating system on how to run a batch job or start a subsystem. It is primarily used with z/OS, the flagship IBM mainframe operating system, and plays a critical role in mainframe automation and workload management.
 JCL doesn't execute business logic directly — instead, it acts as a job orchestration tool, managing the execution of programs (like COBOL, PL/I, Assembler, or utilities like SORT and IDCAMS), allocating system resources (like datasets, memory, and CPU time), and handling job status communication.
 
