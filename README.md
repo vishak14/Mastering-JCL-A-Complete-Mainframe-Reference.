@@ -27,7 +27,7 @@ o	LSDS
 Job Control Language (JCL) is a scripting language used on IBM mainframe systems to instruct the operating system on how to run a batch job or start a subsystem. It is primarily used with z/OS, the flagship IBM mainframe operating system, and plays a critical role in mainframe automation and workload management.
 JCL doesn't execute business logic directly — instead, it acts as a job orchestration tool, managing the execution of programs (like COBOL, PL/I, Assembler, or utilities like SORT and IDCAMS), allocating system resources (like datasets, memory, and CPU time), and handling job status communication.
 
-2. JCL Structure and Basic Statements
+## JCL Structure and Basic Statements
 A JCL script is typically divided into three main parts:
 •	JOB Statement.      – Begins the job and provides control information to the Job Entry Subsystem (JES).
 •	EXEC Statement(s) – Defines the steps (what programs/procedures to run).
@@ -393,7 +393,7 @@ Key Points:
  
 
  
-3. Dataset Handling in JCL
+## Dataset Handling in JCL
 Dataset Handling in JCL, which involves defining how datasets (files) are accessed or managed in a job. JCL uses the DD (Data Definition) statement to define datasets used by a program, specifying parameters like DSN, DISP, UNIT, SPACE, and DCB. Based on usage, datasets can be existing (DISP=SHR), new (DISP=NEW), or temporary (DSN=&&TEMP). Datasets can be input, output, or intermediate, and can also include in-stream data directly in the JCL using DD *. Proper dataset handling ensures smooth execution, efficient resource allocation, and clear data flow between steps in batch processing.
 
  DD (Data Definition) Statement
@@ -527,7 +527,7 @@ These datasets save resources by ensuring temporary data doesn’t remain in the
  
 
 
-4. Procedures and Symbolic Parameters
+## Procedures and Symbolic Parameters
 In JCL (Job Control Language), a PROC (Procedure) is a reusable set of JCL statements defined to simplify job maintenance and promote standardization. A PROC can be defined in-stream (within the same JCL) using //PROCNAME PROC or stored as a cataloged procedure in a procedure library (PROCLIB). The PROC contains one or more steps, each typically invoking a program, and can accept parameters passed from the job using EXEC PROCNAME with symbolic substitution (e.g., &DSN). It helps eliminate redundancy when multiple jobs share common processing logic, such as backup, sort, or load routines. You can override individual step parameters from the calling JCL using parameter overrides or JCL overrides. Procedures are invoked using the EXEC statement and can be nested, though best practices discourage deep nesting. Using PROCs enhances job modularity, makes changes easier to implement, and supports enterprise-level JCL standardization.
 o	Cataloged Procedure
 o	In-stream Procedure
@@ -540,7 +540,7 @@ An In-stream Procedure in JCL is a set of JCL statements defined within the same
 
 Symbolic parameters in JCL are placeholders (variables) defined in a PROC (procedure) that allow dynamic substitution of values when the PROC is called. They begin with an ampersand (&) (e.g., &DSN, &STEP) and are usually defined in the PROC for values like dataset names, program names, or parameter strings. When a job executes the PROC, it can override these symbolic parameters by specifying values in the EXEC statement using the PARM= or positional notation (e.g., EXEC PROCNAME,DSN=MY.DATA.SET), making the procedure reusable and flexible
  
-5. Conditional Execution in JCL
+## Conditional Execution in JCL
 COND Parameter
 The COND parameter in JCL specifies conditions under which a step in a job should be executed or skipped. It can be used to define job or step conditions based on the return codes from previous steps. The COND parameter evaluates the return code from the preceding step, and if the condition is met, the current step can either be bypassed or executed. It is typically written in the format COND=(condition,stepname), where the condition checks return codes or system status. COND allows for better control flow and conditional execution, reducing the need for manual intervention during job execution. 
 
@@ -566,7 +566,7 @@ Used for more readable conditional logic.
 //STEP03 EXEC PGM=ERRORPGM
 // ENDIF
  
-6. JCL Utilities
+## JCL Utilities
 IEFBR14
 IEFBR14 is a utility program in JCL that is commonly used for tasks like creating or deleting datasets without performing any actual processing. It is a dummy program that runs successfully with a return code of 0, making it ideal for allocating or deallocating datasets in a job step. Typically, it is used in scenarios where you need to allocate or delete datasets without performing any meaningful operation on the data itself.
 Example:
