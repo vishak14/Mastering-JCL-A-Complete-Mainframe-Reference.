@@ -664,8 +664,9 @@ PRINT	Print contents of a dataset	PRINT INFILE(INPUT)
 
 
 
-7. VSAM in Detail
-IDCAMS (Integrated Data Set Control Access Method Services) is a powerful utility in JCL used to manage both VSAM and non-VSAM datasets. It is most commonly used for operations such as defining, deleting, copying, printing, and listing datasets, especially VSAM files like KSDS, ESDS, and RRDS. IDCAMS uses control statements provided through the SYSIN DD statement to specify the desired dataset management operation. One of its frequently used commands is REPRO, which copies data between datasets or files. Overall, IDCAMS is essential for dataset and catalog management in mainframe environments.
+## VSAM in Detail
+### IDCAMS 
+(Integrated Data Set Control Access Method Services) is a powerful utility in JCL used to manage both VSAM and non-VSAM datasets. It is most commonly used for operations such as defining, deleting, copying, printing, and listing datasets, especially VSAM files like KSDS, ESDS, and RRDS. IDCAMS uses control statements provided through the SYSIN DD statement to specify the desired dataset management operation. One of its frequently used commands is REPRO, which copies data between datasets or files. Overall, IDCAMS is essential for dataset and catalog management in mainframe environments.
  
 
 Feature / Attribute	KSDS (Key-Sequenced Data Set)	ESDS (Entry-Sequenced Data Set)	RRDS (Relative Record Data Set)	LSDS (Linear Data Set)
@@ -681,7 +682,8 @@ Use Case	Indexed files (e.g., customer DB)	Logs, sequential data (e.g., audit lo
 Support for Alternate Index	Yes	Yes (less common)	No	No
 
 
-### KSDS (Key-Sequenced Data Set) is a type of VSAM dataset where each record is stored and accessed using a unique key. It maintains an index that allows both sequential and direct access based on the key value, making it ideal for applications requiring fast lookups or sorted data. Records are automatically stored in key sequence, and new records are inserted in the correct order, not just appended. KSDS supports dynamic insert, update, and delete operations, providing flexibility for frequently changing data. It is commonly used for databases, customer master files, and systems requiring high-performance indexed access
+### KSDS
+(Key-Sequenced Data Set) is a type of VSAM dataset where each record is stored and accessed using a unique key. It maintains an index that allows both sequential and direct access based on the key value, making it ideal for applications requiring fast lookups or sorted data. Records are automatically stored in key sequence, and new records are inserted in the correct order, not just appended. KSDS supports dynamic insert, update, and delete operations, providing flexibility for frequently changing data. It is commonly used for databases, customer master files, and systems requiring high-performance indexed access
 
 To define a KSDS (Key-Sequenced Data Set) in JCL using IDCAMS (Access Method Services), you typically use the DEFINE CLUSTER command with a combination of parameters. 
 
