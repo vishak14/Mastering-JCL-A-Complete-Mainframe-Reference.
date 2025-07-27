@@ -36,11 +36,13 @@ Note: Each job can have maximum of 255 steps, and each step can have multiple DD
 
  JOB Statement: The JOB statement is the first and mandatory statement in every JCL job, identifying the job to the operating system. It provides essential control information such as job name, accounting details, message options, and execution parameters. This statement allows JES (Job Entry Subsystem) to schedule, manage, and track the job through the system. 
 Used to define:
-•	Job identity
-•	Job class
-•	Accounting info
-•	Output routing
-Syntax Example:
+- Job identity
+- Job class
+- Accounting info
+- Output routing
+
+### Syntax Example:
+
 //MYJOB JOB (ACCT),'SAMPLE JOB',CLASS=A,MSGCLASS=X,MSGLEVEL=(1,1)
 
 Parameter	Description	Example	Notes
