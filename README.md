@@ -567,7 +567,7 @@ Used for more readable conditional logic.
 // ENDIF
  
 ## JCL Utilities
-IEFBR14
+### IEFBR14
 IEFBR14 is a utility program in JCL that is commonly used for tasks like creating or deleting datasets without performing any actual processing. It is a dummy program that runs successfully with a return code of 0, making it ideal for allocating or deallocating datasets in a job step. Typically, it is used in scenarios where you need to allocate or delete datasets without performing any meaningful operation on the data itself.
 Example:
 //JOBNAME   JOB (ACCT),'USER',CLASS=A,MSGCLASS=X
@@ -590,7 +590,7 @@ SPACE=(CYL,(1,1)) allocates 1 cylinder of space.
 UNIT=SYSDA specifies the device type.
 
 In this case, IEFBR14 will successfully create MY.DATASET without actually performing any operation on it.
-IEBGENER
+### IEBGENER
 IEBGENER is a utility in JCL used to copy data from one dataset to another, typically used for copying sequential datasets. It allows for optional data transformation, such as changing the record length or filtering specific data, during the copy process. The utility is commonly used for backup, report generation, or moving data between datasets in a system.
 Example:
 //JOBNAME  JOB (ACCT),'USER',CLASS=A,MSGCLASS=X
@@ -607,7 +607,7 @@ SYSUT2 is the output dataset (DEST.FILE), created with new space allocation (DIS
 SYSPRINT is the output report, which shows the utility’s status.
 SYSIN is set to DUMMY, meaning no control statements are used for transformation.
 
-IEBCOPY
+### IEBCOPY
 IEBCOPY is a JCL utility used to copy, compress, or merge members within or between partitioned datasets (PDS or PDSE). It is commonly used to back up or reorganize libraries by removing deleted or unused space (compression). This utility can also selectively copy members, rename them during the copy, or copy entire libraries efficiently.
 Example:
 //JOBNAME  JOB (ACCT),'USER',CLASS=A,MSGCLASS=X
@@ -652,7 +652,7 @@ Explanation:
 SORTIN: Input dataset containing unsorted records.
 SORTOUT: Output dataset to store sorted records.
 SORT FIELDS=(1,10,CH,A): Sort the records based on the first 10 characters (position 1, length 10), character format (CH), in ascending order (A).
-IDCAMS
+### IDCAMS
 IDCAMS (Integrated Data Set Control Access Method Services) is a utility program in JCL used primarily for managing VSAM and non-VSAM datasets. It allows you to define, delete, print, list, and reorganize datasets, especially VSAM files such as KSDS, ESDS, and RRDS. IDCAMS is commonly used in system administration and batch jobs to handle catalog-related operations and data organization.
 Key Operations Performed by IDCAMS:
 Operation	Purpose	Example Command
