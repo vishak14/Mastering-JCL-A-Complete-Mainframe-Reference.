@@ -888,7 +888,7 @@ CYLINDERS(5 2)	Primary and secondary allocation in cylinders.
 •	Applications must define and interpret the internal structure themselves.
 •	You can't perform standard record-level VSAM operations on an LSDS.
 
-8. Error Handling and Debugging
+## Error Handling and Debugging
 JCL Errors
 These errors occur due to syntax issues or structural problems in your JCL code. The system doesn't execute the job if these are found.
 Examples:
@@ -948,7 +948,7 @@ When a job fails, check these outputs:
 •	JESYSMSG: System messages during step execution
 •	SYSPRINT, SYSOUT: Application-specific logs or print data
 
-9. Real-world Scenarios
+## Real-world Scenarios
  Batch Processing of Financial Transactions
 Use Case:
 Banks and financial institutions process large volumes of transactions such as account updates, loan interest calculations, and end-of-day reconciliations.
@@ -1010,7 +1010,7 @@ How JCL Helps:
 •	Interfaces with DB2 using DSN command processors
 •	Runs SQL jobs embedded in COBOL via precompilation
 
-10. Best Practices
+## Best Practices
  Use Meaningful Job and Step Names
 •	Use clear and descriptive names for JOB and EXEC steps to improve readability and traceability.
 //LOADCSV  JOB ...
