@@ -7,16 +7,16 @@
 -	[Procedures and Symbolic Parameters](#procedures-and-symbolic-parameters)
 -	[Conditional Execution in JCL](#conditional-execution-in-jCL)
 -	[JCL Utilities](#jCL-utilities)
- 	- IEFBR14
- 	- IEBGENER
- 	- IEBCOPY
- 	- IDCAMS
- 	- SORT
+ 	- [IEFBR14](#IEFBR14)
+ 	- [IEBGENER](#IEBGENER)
+ 	- [IEBCOPY](#IEBCOPY)
+ 	- [IDCAMS](#IDCAMS)
+ 	- [SORT](#SORT)
 -	[VSAM in Detail](#vSAM-in-detail)
- 	- KSDS
- 	- ESDS
- 	- RRDS
- 	- LSDS
+ 	- [KSDS](#KSDS)
+ 	- [ESDS](#ESDS)
+ 	- [RRDS](#RRDS)
+ 	- [LSDS](#LSDS)
 -	[Error Handling and Debugging](#error-handling-and-debugging)
 -	[Real-world Scenarios](#real-world-scenario) 
 - [Best Practices](#best-practices)
