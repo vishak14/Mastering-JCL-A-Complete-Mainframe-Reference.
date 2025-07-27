@@ -4,22 +4,22 @@
 - [Introduction to JCL](#introduction-to-jCL)
 - [JCL Structure and Basic Statements](#jCL-structure-and-basic-statements)
 - [[Dataset Handling in JCL](#dataset-handling-in-jCL)
--	[Procedures and Symbolic Parameters](#)
--	[Conditional Execution in JCL](#)
--	[JCL Utilities](#)
+-	[Procedures and Symbolic Parameters](#procedures-and-symbolic-parameters)
+-	[Conditional Execution in JCL](#conditional-execution-in-jCL)
+-	[JCL Utilities](#jCL-utilities)
  	- IEFBR14
  	- IEBGENER
  	- IEBCOPY
  	- IDCAMS
  	- SORT
--	[VSAM in Detail](#)
+-	[VSAM in Detail](#vSAM-in-detail)
  	- KSDS
  	- ESDS
  	- RRDS
  	- LSDS
--	[Error Handling and Debugging](#)
--	[Real-world Scenarios](   #  ) 
-- [Best Practices](#)
+-	[Error Handling and Debugging](#error-handling-and-debugging)
+-	[Real-world Scenarios](#real-world-scenario) 
+- [Best Practices](#best-practices)
 
 
 
