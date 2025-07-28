@@ -553,47 +553,63 @@ If the Parameters Field in DD statements is too long, you can split it into mult
 
 
  
- Null Statement in JCL
-Purpose:
+ ### Null Statement in JCL
+ 
+**Purpose:**
+
 The null statement signifies the end of the job stream. It tells the JES that the job is complete and no more JCL statements follow.
- Syntax:
-//
-•	Just two slashes (//) on a line by themselves.
-•	No name, operation, or parameters.
-Key Points:
-•	Placed after the last JCL statement.
-•	Mandatory in multi-job input streams (e.g., jobs submitted to the internal reader or when concatenating multiple jobs).
-•	Not always required in modern systems unless explicitly using multi-job input.
- Example:
-//MYJOB JOB (123),'END JOB DEMO',CLASS=A,MSGCLASS=X
-//STEP01 EXEC PGM=IEFBR14
-//
+
+ **Syntax:**
+ 
+		``` // ```
+  
+- Just two slashes (//) on a line by themselves.
+- No name, operation, or parameters.
+  
+**Key Points:**
+
+- Placed after the last JCL statement.
+- Mandatory in multi-job input streams (e.g., jobs submitted to the internal reader or when concatenating multiple jobs).
+- Not always required in modern systems unless explicitly using multi-job input.
+  
+ **Example:**
+ 
+``` //MYJOB JOB (123),'END JOB DEMO',CLASS=A,MSGCLASS=X ```
+
+``` //STEP01 EXEC PGM=IEFBR14```
+
+``` // ```
+
 
 //  ← This is the NULL statement, marks the end of JCL
  
 
  
 ## Dataset Handling in JCL
-Dataset Handling in JCL, which involves defining how datasets (files) are accessed or managed in a job. JCL uses the DD (Data Definition) statement to define datasets used by a program, specifying parameters like DSN, DISP, UNIT, SPACE, and DCB. Based on usage, datasets can be existing (DISP=SHR), new (DISP=NEW), or temporary (DSN=&&TEMP). Datasets can be input, output, or intermediate, and can also include in-stream data directly in the JCL using DD *. Proper dataset handling ensures smooth execution, efficient resource allocation, and clear data flow between steps in batch processing.
+**Dataset Handling in JCL,** which involves defining how datasets (files) are accessed or managed in a job. JCL uses the DD (Data Definition) statement to define datasets used by a program, specifying parameters like DSN, DISP, UNIT, SPACE, and DCB. Based on usage, datasets can be existing (DISP=SHR), new (DISP=NEW), or temporary (DSN=&&TEMP). Datasets can be input, output, or intermediate, and can also include in-stream data directly in the JCL using DD *. Proper dataset handling ensures smooth execution, efficient resource allocation, and clear data flow between steps in batch processing.
 
- DD (Data Definition) Statement
+ ### DD (Data Definition) Statement
 In JCL, a DD (Data Definition) statement is used to describe the input, output, or temporary datasets that a program will use during execution. Each DD statement is associated with one file or dataset and includes parameters that specify the dataset name (DSN), its disposition (DISP), space allocation, device type (UNIT), and other characteristics. It starts with // followed by a DD name (used by the program), then the DD keyword, and finally the parameters in columns 16–71. If the parameters are too long, continuation lines can be used. You can reference existing datasets with DISP=SHR, or create new ones with DISP=NEW and additional attributes like SPACE, UNIT, and DCB. Temporary datasets can be defined using DSN=&&TEMP or just omitted for system-generated names. DD * or DD DATA can be used to include in-stream data directly in the JCL.
-common DD statement patterns
-•	Referencing an Existing Dataset
-•	Creating a New Dataset
-•	Using a Temporary Dataset
-•	In-stream Data (DD )
 
-Referencing an Existing Dataset
+**common DD statement patterns**
+
+- Referencing an Existing Dataset
+- Creating a New Dataset
+- Using a Temporary Dataset
+- In-stream Data (DD )
+
+**Referencing an Existing Dataset**
 
 Referencing an existing dataset in JCL is done using the DD statement with the DSN (Dataset Name) parameter pointing to the dataset. The DISP=SHR parameter allows the dataset to be shared with other jobs or users for reading. This method is commonly used for input datasets that are already cataloged in the system. No space or unit allocation is needed since the dataset already exists. It ensures efficient reuse of production or reference data without creating new copies.
 
-//INPUT    DD  DSN=MY.PROD.DATA,DISP=SHR
-Use: Reads from a dataset that already exists.
+``` //INPUT    DD  DSN=MY.PROD.DATA,DISP=SHR ```
 
-DISP=SHR means it can be shared with other jobs.
+**Use:** Reads from a dataset that already exists.
 
-Creating a New Dataset
+**DISP=SHR** means it can be shared with other jobs.
+
+### Creating a New Dataset
+
 Creating a new dataset in JCL involves using a DD statement with DISP=NEW to indicate that the dataset should be created during job execution. The DSN parameter assigns a name to the new dataset, while UNIT and SPACE define the storage device and space allocation, respectively. The DCB parameter (Data Control Block) specifies dataset attributes like record format and length. You can also include DISP=(NEW,CATLG,DELETE) to manage cataloging on success and deletion on failure. This approach is used when output or intermediate data needs to be stored permanently or temporarily.
 
 //OUTPUT   DD  DSN=MY.NEW.DATASET,DISP=(NEW,CATLG,DELETE),
