@@ -29,10 +29,11 @@ JCL doesn't execute business logic directly — instead, it acts as a job orches
 
 ## JCL Structure and Basic Statements
 A JCL script is typically divided into three main parts:
-•	JOB Statement.      – Begins the job and provides control information to the Job Entry Subsystem (JES).
-•	EXEC Statement(s) – Defines the steps (what programs/procedures to run).
-•	DD Statement(s)    – Defines input/output resources (datasets, SYSOUT, etc.) for each step.
-Note: Each job can have maximum of 255 steps, and each step can have multiple DD statements associated with it.
+-	JOB Statement.      – Begins the job and provides control information to the Job Entry Subsystem (JES).
+-	EXEC Statement(s) – Defines the steps (what programs/procedures to run).
+-	DD Statement(s)    – Defines input/output resources (datasets, SYSOUT, etc.) for each step.
+  
+**Note:** > *Each job can have maximum of 255 steps, and each step can have multiple DD statements associated with it.*
 
  **JOB Statement:** The JOB statement is the first and mandatory statement in every JCL job, identifying the job to the operating system. It provides essential control information such as job name, accounting details, message options, and execution parameters. This statement allows JES (Job Entry Subsystem) to schedule, manage, and track the job through the system. 
 Used to define:
@@ -86,12 +87,11 @@ Used to define:
 </table>
 <br>
 <br>
-<!-- Empty line above the table -->
-<!-- Empty line above the table -->
+
 
 
 ### Execution Control Parameters
-<!-- Empty line above the table -->
+
 ### CLASS
 The CLASS parameter in a JCL JOB statement determines the job's classification for processing and routing in the JES (Job Entry Subsystem). It is used to group jobs based on similar processing characteristics such as priority, resource usage, or execution time. Valid values for CLASS are typically single alphanumeric characters (A–Z, 0–9), and their meanings are defined by the installation. For example, CLASS=A might represent low-priority batch jobs, while CLASS=Z could be reserved for high-priority real-time tasks. The system operator or JES scheduler uses this classification to decide when and where the job will run.
 In a typical enterprise mainframe environment, CLASS values in JCL are site-defined by system administrators and mapped to execution queues with specific characteristics. 
