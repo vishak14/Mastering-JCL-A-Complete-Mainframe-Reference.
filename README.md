@@ -561,7 +561,7 @@ The null statement signifies the end of the job stream. It tells the JES that th
 
  **Syntax:**
  
-		``` // ```
+``` // ```
   
 - Just two slashes (//) on a line by themselves.
 - No name, operation, or parameters.
