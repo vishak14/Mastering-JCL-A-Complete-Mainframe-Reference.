@@ -44,8 +44,8 @@ Used to define:
 ### Syntax Example:
 
 `//MYJOB JOB (ACCT),'SAMPLE JOB',CLASS=A,MSGCLASS=X,MSGLEVEL=(1,1)`
-<!-- Empty line above the table -->
-<!-- Empty line above the table -->
+<br>
+<br>
 <table>
   <thead>
     <tr style="background-color:Blue; color:Blue">
@@ -82,6 +82,8 @@ Used to define:
     </tr>
   </tbody>
 </table>
+<br>
+<br>
 <!-- Empty line above the table -->
 <!-- Empty line above the table -->
 
@@ -94,14 +96,17 @@ In a typical enterprise mainframe environment, CLASS values in JCL are site-defi
 Here's how they’re usually organized:
 
  CLASS	Typical Use Case	Characteristics
-A	Low-priority batch jobs	Limited CPU/memory, runs during off-peak
-B	Medium-priority production jobs	More CPU/time allocation
-C	Time-critical financial batch jobs	Higher priority, more resources
-D	Quick-running test jobs	Fast execution, limited memory, short time
-E	Long-running or heavy compute jobs	More region/time, monitored closely
-X	Special class for developers	May notify TSO users on completion
-Y	Background report generation	Scheduled overnight or low-usage hours
-Z	Real-time or high-priority jobs	Immediate scheduling, full resource access
+| CLASS | Typical Use Case                   | Characteristics                                      |
+|-------|------------------------------------|------------------------------------------------------|
+| A     | Low-priority batch jobs            | Limited CPU/memory, runs during off-peak             |
+| B     | Medium-priority production jobs    | More CPU/time allocation                             |
+| C     | Time-critical financial batch jobs | Higher priority, more resources                      |
+| D     | Quick-running test jobs            | Fast execution, limited memory, short time           |
+| E     | Long-running or heavy compute jobs | More region/time, monitored closely                  |
+| X     | Special class for developers       | May notify TSO users on completion                   |
+| Y     | Background report generation       | Scheduled overnight or low-usage hours               |
+| Z     | Real-time or high-priority jobs    | Immediate scheduling, full resource access           |
+
   How This Mapping Works Internally
 •	System exits or JES2/JES3 parameters define:
 o	Maximum CPU time per class.
