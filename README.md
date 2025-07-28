@@ -33,7 +33,7 @@ A JCL script is typically divided into three main parts:
 -	EXEC Statement(s) – Defines the steps (what programs/procedures to run).
 -	DD Statement(s)    – Defines input/output resources (datasets, SYSOUT, etc.) for each step.
   
-**Note:** - > *Each job can have maximum of 255 steps, and each step can have multiple DD statements associated with it.*
+**Note:**  -> *Each job can have maximum of 255 steps, and each step can have multiple DD statements associated with it.*
 
  **JOB Statement:** The JOB statement is the first and mandatory statement in every JCL job, identifying the job to the operating system. It provides essential control information such as job name, accounting details, message options, and execution parameters. This statement allows JES (Job Entry Subsystem) to schedule, manage, and track the job through the system. 
 Used to define:
