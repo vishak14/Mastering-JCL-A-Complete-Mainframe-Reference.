@@ -43,6 +43,8 @@ Used to define:
 
 ### Syntax Example:
 
+### <span style="color:blue;">This is a blue heading</span>
+
 `//MYJOB JOB (ACCT),'SAMPLE JOB',CLASS=A,MSGCLASS=X,MSGLEVEL=(1,1)`
 <br>
 <br>
