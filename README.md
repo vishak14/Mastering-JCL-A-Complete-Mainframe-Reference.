@@ -159,19 +159,20 @@ Explanation of Values for TYPRUN
      - **Common Use Case:** This is often used during the testing phase of job development when you want to check the correctness of the JCL before running the actual job.
      - **Behavior:** The system will perform the syntax check and report errors (if any) but will not execute any steps or allocate any resources.
      - **To Review Errors:** Errors are reported as part of the job’s output, typically in the SYSPRINT dataset.
-     - 
+       
 ``` //JOBNAME  JOB  (ACCT#),'JOB DESCRIPTION',TYPRUN=SCAN```
 
-3.	TYPRUN=NONE:
-o	Purpose: This is the default behavior if no TYPRUN value is specified. It indicates that the job should execute normally as soon as it is scheduled and resources are available.
-o	Common Use Case: This is the typical setting for most jobs where immediate execution is required.
-o	Behavior: The job is scheduled for execution and, when resources are available, the job is started without any delays.
-USER=, PASSWORD=
-•	Used to submit jobs under a specific RACF user ID.
-•	Example: USER=TSOUSER, PASSWORD=SECRET
-•	May be site-restricted due to security policies.
+- **TYPRUN=NONE:**
+   - **Purpose:** This is the default behavior if no TYPRUN value is specified. It indicates that the job should execute normally as soon as it is scheduled and resources are available.
+   - **Common Use Case:** This is the typical setting for most jobs where immediate execution is required.
+   - **Behavior:** The job is scheduled for execution and, when resources are available, the job is started without any delays.
+     
+### USER=, PASSWORD=
+Used to submit jobs under a specific RACF user ID.
+   - Example: USER=TSOUSER, PASSWORD=SECRET
+   - May be site-restricted due to security policies.
 
-Scheduling & Resource Control
+### Scheduling & Resource Control
  PRTY
 •	The PRTY (Priority) parameter in JCL is used to specify the priority of a job relative to other jobs in the system. It is defined in the JOB statement and determines the order in which jobs are executed. The PRTY value can range from 0 to 15, where 0 represents the lowest priority, and 15 represents the highest priority. The system will attempt to execute jobs with higher priority values first, provided the necessary resources are available.
 •	By default, if PRTY is not specified, the job will be assigned a priority of 8, which is considered a neutral priority. Higher priority jobs may preempt lower priority jobs if system resources are scarce. In some systems, administrators can use the PRTY value to manage job queues more effectively, ensuring critical jobs run sooner than less time-sensitive ones.
