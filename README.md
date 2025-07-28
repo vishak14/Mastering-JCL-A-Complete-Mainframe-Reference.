@@ -339,19 +339,19 @@ Here’s a complete example showing how to define and call an in-stream procedur
 //USEPROC   EXEC MYPROC
 
 Explanation:
-1.	//MYPROC PROC begins the in-stream procedure definition named MYPROC.
-2.	Inside the PROC:
-o	STEP1 executes IEFBR14, a dummy utility (often used for dataset allocation).
-o	DD1 defines a new dataset.
-3.	PEND marks the end of the in-stream procedure.
-4.	//USEPROC EXEC MYPROC calls the MYPROC defined earlier in the same job.
+- //MYPROC PROC begins the in-stream procedure definition named MYPROC.
+- Inside the PROC:
+	- STEP1 executes IEFBR14, a dummy utility (often used for dataset allocation).
+	- DD1 defines a new dataset.
+- PEND marks the end of the in-stream procedure.
+- //USEPROC EXEC MYPROC calls the MYPROC defined earlier in the same job.
 
-Key Rules:
+**Key Rules:**
 •	All in-stream procedures must be defined before they are called.
 •	They must appear after the JOB statement and before the EXEC that uses them.
 •	PEND is mandatory to close the in-stream PROC definition.
 
-External (Cataloged) PROC
+**External (Cataloged) PROC**
 •	Definition Location: Stored outside the JCL in a procedure library (e.g., SYS1.PROCLIB or a user-defined one).
 •	Invocation: Called using EXEC PROC=procname in any JCL that has access to the library (possibly via JCLLIB).
 •	Reusability: Highly reusable across many jobs.
