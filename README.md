@@ -308,6 +308,7 @@ A JCL job can invoke multiple PROCs, but only one procedure (PROC) can be execut
 - If you define in-stream procedures, they must all appear before the first EXEC that calls any of them, and each must end with PEND.
 
 **Example:**
+
 ``` //MYJOB   JOB (ACCT),'MULTIPLE PROCS' ```
 
 ``` //JCLLIB  JCLLIB ORDER=(MY.PROCLIB) ```
@@ -370,6 +371,7 @@ Here’s a complete example showing how to define and call an in-stream procedur
 - **Maintenance:** Easier to maintain — centralized and shared by many jobs.
   
 **Example:**
+
 ``` //MYJOB    JOB (ACCT),'CALLING CATALOGED PROC' ```
 
 ``` //JCLLIB   JCLLIB ORDER=(MY.PROCLIB) ```
@@ -401,6 +403,7 @@ When invoking a cataloged PROC, you can override parameters within the PROC defi
 You can also override DD statements from within the job step. This means you can change dataset names, allocation parameters, etc., for specific steps that call a cataloged PROC.
 
 **Example:**
+
 ``` //MYJOB    JOB (ACCT),'DD OVERRIDE EXAMPLE' ```
 
 ``` //JCLLIB   JCLLIB ORDER=(MY.PROCLIB) ```
@@ -474,57 +477,79 @@ In JCL, columns 1–2 are reserved for JCL identifiers or indicators. A commonly
 
 
 **Columns 3–10: Name Field**
+
 Refers to the name given to various elements like JOBs, EXEC steps, PROCs, and DD statements. Left-justified, up to 8 characters. •  must begin in column 3 and follow IBM naming conventions: 1–8 characters, starting with an alphabetic character (A–Z). They help uniquely identify parts of a JCL so that overrides, referencing, and debugging can be done easily.For example, you can use MYSTEP to name a step and later override it using MYSTEP.DDNAME. Must not contain special characters or spaces and are crucial for job management and readability.
+
 Optional in some cases (e.g., continuation lines, comments).
-Example:
-//STEP10  EXEC PGM=MYPROG
+
+**Example:**
+
+``` //STEP10  EXEC PGM=MYPROG ```
+
 In the above example STEP10   is the name field
 
-Columns 11–15: Operation Field
+**Columns 11–15: Operation Field**
+
 The Operation Field in columns 11–15 of a JCL statement specifies the type of operation or statement being executed, such as JOB, EXEC, or DD. It tells the system what action to perform for that line—like submitting a job, executing a program, or defining a dataset. This field must be left-aligned starting in column 11, with a maximum length of 5 characters. Only valid JCL operations are allowed here; invalid keywords will cause a JCL error. Common operations include JOB (start of a job), EXEC (execute a program or procedure), and DD (define data).
-Key Operation Field
-Operation	Purpose
-JOB	Starts a new job and provides job-level information.
-EXEC	Executes a program or calls a procedure (PROC).
-DD	Defines a data set or input/output resource for the program step.
-PROC	Defines a procedure (set of reusable JCL statements).
-PEND	Marks the end of a PROC definition.
-IF	Begins a conditional execution block (used with condition codes).
-THEN	Specifies the action to take if the IF condition is true.
-ELSE	Specifies an alternative action if the IF condition is false.
-ENDIF	Ends the conditional logic block.
-OUTPUT	Defines output class and processing instructions for SYSOUT.
-INCLUDE	Includes external JCL members during job execution.
-SET	Assigns values to symbolic parameters.
-Example:
-//STEP10  EXEC PGM=IEBGENER
- Columns 16–71: Parameters Field
+
+**Key Operation Field**
+
+| **Operation** | **Purpose** |
+|---------------|-------------|
+| `JOB`         | Starts a new job and provides job-level information. |
+| `EXEC`        | Executes a program or calls a procedure (PROC). |
+| `DD`          | Defines a data set or input/output resource for the program step. |
+| `PROC`        | Defines a procedure (set of reusable JCL statements). |
+| `PEND`        | Marks the end of a PROC definition. |
+| `IF`          | Begins a conditional execution block (used with condition codes). |
+| `THEN`        | Specifies the action to take if the IF condition is true. |
+| `ELSE`        | Specifies an alternative action if the IF condition is false. |
+| `ENDIF`       | Ends the conditional logic block. |
+| `OUTPUT`      | Defines output class and processing instructions for SYSOUT. |
+| `INCLUDE`     | Includes external JCL members during job execution. |
+| `SET`         | Assigns values to symbolic parameters. |
+
+**Example:**
+
+``` //STEP10  EXEC PGM=IEBGENER ```
+
+**Columns 16–71: Parameters Field**
 In JCL (Job Control Language), columns 16–71 make up the Parameters Field, where the actual command parameters or options for a JCL statement are entered. This field follows the operation field (columns 10–15), which defines the type of JCL statement like EXEC or DD. The Parameters Field is used to pass arguments to programs, specify datasets, or define resources depending on the statement type. Data in this field must begin in column 16 and should not exceed column 71 unless continuation is used. Any data beyond column 71 is ignored unless it's part of a continuation line starting with a comma in column 72. 
-/STEP03   EXEC PGM=MYPROG
-//INPUT    DD  DSN=MY.INPUT.DATA,DISP=SHR
-//OUTPUT   DD  DSN=MY.OUTPUT.DATA,DISP=(NEW,CATLG,DELETE),
-//             SPACE=(CYL,(5,5)),UNIT=SYSDA
-Explanation:
-//STEP03 – The step name, indicating that STEP03 executes MYPROG.
-EXEC PGM=MYPROG – The execution command, telling JCL to run MYPROG.
-DD – The Data Definition statement that defines datasets or files to be used by the program.
-DSN=MY.INPUT.DATA – The dataset name (this is the parameter field for the input dataset).
-DISP=SHR – The disposition of the dataset (another parameter).
+
+``` //STEP03   EXEC PGM=MYPROG ```
+``` //INPUT    DD  DSN=MY.INPUT.DATA,DISP=SHR ```
+``` //OUTPUT   DD  DSN=MY.OUTPUT.DATA,DISP=(NEW,CATLG,DELETE), ```
+``` //             SPACE=(CYL,(5,5)),UNIT=SYSDA ```
+
+**Explanation:**
+
+- //STEP03 – The step name, indicating that STEP03 executes MYPROG.
+- EXEC PGM=MYPROG – The execution command, telling JCL to run MYPROG.
+- DD – The Data Definition statement that defines datasets or files to be used by the program.
+- DSN=MY.INPUT.DATA – The dataset name (this is the parameter field for the input dataset).
+- DISP=SHR – The disposition of the dataset (another parameter).
+
 For the second DD statement:
+
 DSN=MY.OUTPUT.DATA – The dataset name for output.
+
 DISP=(NEW,CATLG,DELETE) – Defines what happens to the dataset after the job ends (create it, catalog it, delete it if the job fails).
+
 SPACE=(CYL,(5,5)) – Defines space allocation for the dataset (5 cylinders for primary and secondary space).
+
 UNIT=SYSDA – Specifies the unit type (in this case, SYSDA is a common DASD unit).
+
 If the Parameters Field in DD statements is too long, you can split it into multiple lines, just like in the EXEC statement.
-Columns 72–80: Sequence Numbers (Optional)
-•	Used historically for sequencing punched cards.
-•	Often filled with card numbers (e.g., 00001001).
-•	Ignored by JES unless your site enables strict formatting.
+
+** Columns 72–80: Sequence Numbers (Optional) **
+- Used historically for sequencing punched cards.
+- Often filled with card numbers (e.g., 00001001).
+- Ignored by JES unless your site enables strict formatting.
  
-Special Notes
-•	Continuation Lines: If a statement continues onto the next line, follow this format:
-•	End the current line with a comma.
-•	Start the next line with // and at least one blank in the Name field area (columns 3–10).
+**Special Notes**
+- > *Continuation Lines: If a statement continues onto the next line, follow this format*
+- > *End the current line with a comma.*
+- > *Start the next line with // and at least one blank in the Name field area (columns 3–10).*
 
 
  
