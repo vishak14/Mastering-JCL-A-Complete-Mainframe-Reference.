@@ -127,32 +127,41 @@ The MSGCLASS parameter in a JCL JOB statement controls where the system routes t
 
  ``` MSGLEVEL=(statements,allocations) ```
  
-The MSGLEVEL=(statements,allocations) parameter in a JCL JOB statement controls the amount of information written to the job log. The first value (statements) determines whether to display only the JOB statement (0) or all JCL statements (1). The second value (allocations) specifies whether to suppress (0) or include (1) allocation and disposition messages for datasets used in the job.
-Example: MSGLEVEL=(1,1)
-NOTIFY=userid
-•	Sends a TSO notification when job completes.
-•	Example: NOTIFY=USER01, this will send notification to the tso user USER01 after job completes
-•	Common in test environments.
-TYPRUN
+The **MSGLEVEL=(statements,allocations)** parameter in a JCL JOB statement controls the amount of information written to the job log. The first value (statements) determines whether to display only the JOB statement (0) or all JCL statements (1). The second value (allocations) specifies whether to suppress (0) or include (1) allocation and disposition messages for datasets used in the job.
+
+``` Example: MSGLEVEL=(1,1) ```
+
+
+### NOTIFY=userid
+- Sends a TSO notification when job completes.
+- Example: NOTIFY=USER01, this will send notification to the tso user USER01 after job completes
+- Common in test environments.
+
+### TYPRUN
 In JCL (Job Control Language), the TYPRUN parameter is used to specify how a job should be executed. It controls the execution behavior of a job by indicating whether the job should run normally, be held for later execution, or be executed in a special mode. This parameter was not encouraged in many organization for production jobs.
 TYPRUN Parameter Overview
 The TYPRUN parameter is used in the JOB statement to specify the job’s execution characteristics. The value of TYPRUN can be one of the following:
-•	TYPRUN=HOLD
-•	TYPRUN=SCAN
-•	TYPRUN=NONE (default, if TYPRUN is not specified)
+ - TYPRUN=HOLD
+ - TYPRUN=SCAN
+ - TYPRUN=NONE (default, if TYPRUN is not specified)
+   
 Explanation of Values for TYPRUN
-1.	TYPRUN=HOLD:
-o	Purpose: When a job is submitted with TYPRUN=HOLD, it will not start executing immediately. Instead, the job is placed in a "held" state, meaning that it is waiting for further action before execution.
-o	Common Use Case: This is useful when the job needs to be reviewed or controlled manually before execution. For example, it can be used for jobs that need approval or verification before running.
-o	Behavior: The job remains in the system and is in a pending state, but no resources are allocated until the job is released or explicitly started.
-o	To Release the Job: The job can be released using the START command (in some cases, depending on the environment).
-//JOBNAME  JOB  (ACCT#),'JOB DESCRIPTION',TYPRUN=HOLD
-2.	TYPRUN=SCAN:
-o	Purpose: The TYPRUN=SCAN option is used when you want to submit the job for syntax checking, but you don’t want it to actually execute. It tells the system to parse and validate the JCL and program syntax, ensuring there are no errors.
-o	Common Use Case: This is often used during the testing phase of job development when you want to check the correctness of the JCL before running the actual job.
-o	Behavior: The system will perform the syntax check and report errors (if any) but will not execute any steps or allocate any resources.
-o	To Review Errors: Errors are reported as part of the job’s output, typically in the SYSPRINT dataset.
-//JOBNAME  JOB  (ACCT#),'JOB DESCRIPTION',TYPRUN=SCAN
+- **TYPRUN=HOLD:**
+    - **Purpose:** When a job is submitted with TYPRUN=HOLD, it will not start executing immediately. Instead, the job is placed in a "held" state, meaning that it is waiting for further action before execution.
+    - **Common Use Case:** This is useful when the job needs to be reviewed or controlled manually before execution. For example, it can be used for jobs that need approval or verification before running.
+    - **Behavior:** The job remains in the system and is in a pending state, but no resources are allocated until the job is released or explicitly started.
+    - **To Release the Job:** The job can be released using the START command (in some cases, depending on the environment).
+
+``` //JOBNAME  JOB  (ACCT#),'JOB DESCRIPTION',TYPRUN=HOLD```
+
+- **TYPRUN=SCAN:**
+     - **Purpose:** The TYPRUN=SCAN option is used when you want to submit the job for syntax checking, but you don’t want it to actually execute. It tells the system to parse and validate the JCL and program syntax, ensuring there are no errors.
+     - **Common Use Case:** This is often used during the testing phase of job development when you want to check the correctness of the JCL before running the actual job.
+     - **Behavior:** The system will perform the syntax check and report errors (if any) but will not execute any steps or allocate any resources.
+     - **To Review Errors:** Errors are reported as part of the job’s output, typically in the SYSPRINT dataset.
+     - 
+``` //JOBNAME  JOB  (ACCT#),'JOB DESCRIPTION',TYPRUN=SCAN```
+
 3.	TYPRUN=NONE:
 o	Purpose: This is the default behavior if no TYPRUN value is specified. It indicates that the job should execute normally as soon as it is scheduled and resources are available.
 o	Common Use Case: This is the typical setting for most jobs where immediate execution is required.
