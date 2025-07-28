@@ -216,7 +216,7 @@ The JCLLIB statement in JCL is used to specify the location(s) of one or more ca
 JCLLIB is helpful in environments where procedures are stored outside the system default procedure library (SYS1.PROCLIB). It allows modularity and separation of production, development, or test procedures. The libraries specified in JCLLIB must be cataloged PDS or PDSE datasets. This statement does not execute any code—it only defines a search path for procedures. Proper use of JCLLIB enables flexibility and maintainability in managing JCL procedures across different teams or systems.
 
 **Example**
-``` //MYJOB    JOB (1234),'TEST JCLLIB' ```
+``` //MYJOB    JOB (1234),'TEST JCLLIB' ``
 ``` //JCLLIB   JCLLIB ORDER=(MY.PROCLIB1,MY.PROCLIB2) ```
 ``` //STEP1    EXEC PROC=MYPROC ```
  
