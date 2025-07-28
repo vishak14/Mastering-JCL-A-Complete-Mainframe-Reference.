@@ -246,18 +246,27 @@ You can specify multiple datasets in JOBLIB using concatenation, and they will b
 
 
 You can concatenate multiple libraries like this:
+
 ``` //JOBLIB  DD  DSN=library1.name,DISP=SHR ```
 
 ``` //        DD  DSN=library2.name,DISP=SHR ```
  
  **Example**
+ 
 ``` //MYJOB    JOB (123),'TEST JOB' ```
+
 ``` //JOBLIB   DD  DSN=MY.LOAD.LIBRARY,DISP=SHR ```
+
 ``` //STEP1    EXEC PGM=MYPROG ```
+
 ``` //SYSPRINT DD  SYSOUT=* ```
+
 ``` //SYSIN    DD  * ```
+
 ```  input parameters ```
+
 ``` /* ```
+
 
 
 What this does:
