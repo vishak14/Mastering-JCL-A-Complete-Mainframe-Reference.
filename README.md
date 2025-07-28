@@ -53,6 +53,44 @@ Parameter	Description	Example	Notes
 | (acct-info)   | Accounting information         | (12345,DEPT01)     | Used for tracking resource usage. Site-specific.                     |
 | 'description' | Job description or title       | 'MONTH-END REPORT' | Optional, for documentation only.                                    |
 
+<table>
+  <thead>
+    <tr style="background-color:#4472C4; color:white">
+      <th>Parameter</th>
+      <th>Description</th>
+      <th>Example</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>jobname</td>
+      <td>Name of the job (1–8 characters)</td>
+      <td>MYJOB</td>
+      <td>First character must be alphabetic or national ($, #, @).</td>
+    </tr>
+    <tr>
+      <td>JOB</td>
+      <td>Indicates the start of the job</td>
+      <td>JOB</td>
+      <td>Required keyword.</td>
+    </tr>
+    <tr>
+      <td>(acct-info)</td>
+      <td>Accounting information</td>
+      <td>(12345,DEPT01)</td>
+      <td>Used for tracking resource usage. Site-specific.</td>
+    </tr>
+    <tr>
+      <td>'description'</td>
+      <td>Job description or title</td>
+      <td>'MONTH-END REPORT'</td>
+      <td>Optional, for documentation only.</td>
+    </tr>
+  </tbody>
+</table>
+
+
 jobname	Name of the job (1–8 characters)	MYJOB	First character must be alphabetic or national ($, #, @).
 JOB	Indicates the start of the job	JOB	Required keyword.
 (acct-info)	Accounting information	(12345,DEPT01)	Used for tracking resource usage. Site-specific.
