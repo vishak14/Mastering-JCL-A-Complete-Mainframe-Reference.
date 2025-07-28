@@ -315,6 +315,7 @@ A JCL job can invoke multiple PROCs, but only one procedure (PROC) can be execut
 ``` //STEP1   EXEC PROC=BACKUPPROC ```
 
 ``` //STEP2   EXEC PROC=REPORTPROC ```
+
 ``` //STEP3   EXEC PROC=ARCHIVEPROC ```
 
 Here, the job calls three different procedures, each on its own step. So, while a single EXEC statement can only run one PROC, a job can use many EXEC statements, each calling a different procedure.
@@ -328,18 +329,28 @@ Here’s a complete example showing how to define and call an in-stream procedur
 - **Maintenance:** Can clutter job stream; changes need to be repeated across jobs if reused.
 
  Example with In-Stream PROC
-//MYJOB     JOB (123),'IN-STREAM PROC DEMO'
-//MYPROC    PROC
-//STEP1     EXEC PGM=IEFBR14
-//DD1       DD   DSN=MY.TEST.DATASET,
-//               DISP=(NEW,CATLG,DELETE),
-//               UNIT=SYSDA,
-//               SPACE=(TRK,(1,1))
-//         PEND
-//*
-//USEPROC   EXEC MYPROC
+ 
+``` //MYJOB     JOB (123),'IN-STREAM PROC DEMO' ```
 
-Explanation:
+``` //MYPROC    PROC ```
+
+``` //STEP1     EXEC PGM=IEFBR14 ```
+
+``` //DD1       DD   DSN=MY.TEST.DATASET, ```
+
+``` //               DISP=(NEW,CATLG,DELETE), ```
+
+``` //               UNIT=SYSDA, ```
+
+``` //               SPACE=(TRK,(1,1)) ```
+
+``` //         PEND ```
+
+``` //* ```
+
+``` //USEPROC   EXEC MYPROC ```
+
+**Explanation:**
 - //MYPROC PROC begins the in-stream procedure definition named MYPROC.
 - Inside the PROC:
 	- STEP1 executes IEFBR14, a dummy utility (often used for dataset allocation).
