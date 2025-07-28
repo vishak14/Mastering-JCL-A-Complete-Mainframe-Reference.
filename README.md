@@ -46,9 +46,11 @@ Used to define:
 `//MYJOB JOB (ACCT),'SAMPLE JOB',CLASS=A,MSGCLASS=X,MSGLEVEL=(1,1)`
 
 
+
+
 <table>
   <thead>
-    <tr style="background-color:#4472C4; color:Blue">
+    <tr style="background-color:Blue; color:Blue">
       <th>Parameter</th>
       <th>Description</th>
       <th>Example</th>
@@ -71,13 +73,13 @@ Used to define:
     <tr>
       <td>(acct-info)</td>
       <td>Accounting information</td>
-      <td>(12345,DEPT01)</td>
+      <td>(ACCT)</td>
       <td>Used for tracking resource usage. Site-specific.</td>
     </tr>
     <tr>
       <td>'description'</td>
       <td>Job description or title</td>
-      <td>'MONTH-END REPORT'</td>
+      <td>'SAMPLE JOB'</td>
       <td>Optional, for documentation only.</td>
     </tr>
   </tbody>
