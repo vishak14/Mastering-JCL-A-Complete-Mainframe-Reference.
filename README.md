@@ -173,41 +173,52 @@ Used to submit jobs under a specific RACF user ID.
    - May be site-restricted due to security policies.
 
 ### Scheduling & Resource Control
- PRTY
-•	The PRTY (Priority) parameter in JCL is used to specify the priority of a job relative to other jobs in the system. It is defined in the JOB statement and determines the order in which jobs are executed. The PRTY value can range from 0 to 15, where 0 represents the lowest priority, and 15 represents the highest priority. The system will attempt to execute jobs with higher priority values first, provided the necessary resources are available.
-•	By default, if PRTY is not specified, the job will be assigned a priority of 8, which is considered a neutral priority. Higher priority jobs may preempt lower priority jobs if system resources are scarce. In some systems, administrators can use the PRTY value to manage job queues more effectively, ensuring critical jobs run sooner than less time-sensitive ones.
-•	However, the PRTY value does not guarantee immediate execution if other jobs with equal or higher priority are already running. Priority also interacts with job class and resource availability to determine job execution. The PRTY parameter is useful in managing workloads and optimizing job throughput in large batch processing environments.
-Example: PRTY=10
- REGION
-The REGION parameter in JCL is used to define the amount of virtual storage (memory) that a job or step can use during its execution. It is specified in the EXEC statement and is usually set in kilobytes (KB) or megabytes (MB). The default value for REGION is often system-dependent, but you can set it explicitly to control memory allocation for the job. If the job exceeds the specified region size, it may fail with a memory-related error, such as an "out of memory" condition. The REGION parameter helps optimize resource usage, preventing jobs from consuming excessive system memory. 
-Examples:
-o	REGION=0M (no limit)
-o	REGION=4M (4 megabytes)
-TIME
-The TIME parameter in JCL specifies the maximum amount of CPU time a job or step is allowed to consume. It is defined in the EXEC statement and is set in minutes, with an optional seconds component. If the job exceeds the specified time limit, it is terminated by the system, and a time limit exceeded (TLE) message is issued. The default value for TIME is often set by the system, and if not specified, it may be assumed to be 00:00 (no time limit). The TIME parameter helps manage system resources by ensuring that long-running or stuck jobs do not consume excessive CPU time, thus preventing delays for other jobs.
-Values:
-o	TIME=1440: Unlimited.
-o	TIME=5: 5 minutes.
-o	TIME=0.1: 6 seconds.
-o	TIME=NOLIMIT Unlimited
-ADDRSPC
-Specifies address space. Not used widely.
-o	VIRTUAL: Virtual memory.
-o	REAL: Real storage (rare).
-•	Example: ADDRSPC=VIRTUAL
+ **PRTY**
  
-Security and Audit
-ACCOUNT
+   - The PRTY (Priority) parameter in JCL is used to specify the priority of a job relative to other jobs in the system. It is defined in the JOB statement and determines the order in which jobs are executed. The PRTY value can range from 0 to 15, where 0 represents the lowest priority, and 15 represents the highest priority. The system will attempt to execute jobs with higher priority values first, provided the necessary resources are available.
+   - By default, if PRTY is not specified, the job will be assigned a priority of 8, which is considered a neutral priority. Higher priority jobs may preempt lower priority jobs if system resources are scarce. In some systems, administrators can use the PRTY value to manage job queues more effectively, ensuring critical jobs run sooner than less time-sensitive ones.
+   - However, the PRTY value does not guarantee immediate execution if other jobs with equal or higher priority are already running. Priority also interacts with job class and resource availability to determine job execution. The PRTY parameter is useful in managing workloads and optimizing job throughput in large batch processing environments.
+
+``` Example: PRTY=10 ```
+ 
+ **REGION**
+The REGION parameter in JCL is used to define the amount of virtual storage (memory) that a job or step can use during its execution. It is specified in the EXEC statement and is usually set in kilobytes (KB) or megabytes (MB). The default value for REGION is often system-dependent, but you can set it explicitly to control memory allocation for the job. If the job exceeds the specified region size, it may fail with a memory-related error, such as an "out of memory" condition. The REGION parameter helps optimize resource usage, preventing jobs from consuming excessive system memory. 
+
+**Examples:**
+   - REGION=0M (no limit)
+   - REGION=4M (4 megabytes)
+     
+**TIME**
+The TIME parameter in JCL specifies the maximum amount of CPU time a job or step is allowed to consume. It is defined in the EXEC statement and is set in minutes, with an optional seconds component. If the job exceeds the specified time limit, it is terminated by the system, and a time limit exceeded (TLE) message is issued. The default value for TIME is often set by the system, and if not specified, it may be assumed to be 00:00 (no time limit). The TIME parameter helps manage system resources by ensuring that long-running or stuck jobs do not consume excessive CPU time, thus preventing delays for other jobs.
+
+ **Values:**
+   - TIME=1440 --> Unlimited.
+   - TIME=5: --> 5 minutes.
+   - TIME=0.1: --> 6 seconds.
+   - TIME=NOLIMIT -->Unlimited
+   - 
+**ADDRSPC**
+Specifies address space. Not used widely.
+   - VIRTUAL: Virtual memory.
+   - REAL: Real storage (rare).
+	
+``` Example: ADDRSPC=VIRTUAL ```
+ 
+### Security and Audit
+**ACCOUNT**
 The ACCOUNT parameter in JCL is used to specify an account number or identifier for job tracking and billing purposes. It is defined in the JOB statement and helps administrators and financial systems track resource usage associated with specific departments, projects, or clients. This parameter allows the job to be charged to the appropriate account for resource usage, making it essential in environments where resource consumption needs to be allocated or reported. The ACCOUNT field can contain alphanumeric characters, depending on the system's configuration and the organization’s billing requirements.
+
 In some systems, multiple ACCOUNT values can be used, with each providing detailed categorization for job cost allocation. It is also possible to use different ACCOUNT numbers for different job steps, allowing more granular tracking. The ACCOUNT parameter is often used in conjunction with other job control information, such as job classes or resource allocation parameters. If no ACCOUNT parameter is specified, the job may be assigned a default value set by the system or the system administrator. In some environments, the ACCOUNT number may be validated to ensure the specified account exists or is authorized to incur charges. This feature is crucial for organizations that need to keep track of job costs and ensure that each job is appropriately billed for its resource usage.
 
-JCLLIB (used separately)
+**JCLLIB (used separately)**
 The JCLLIB statement in JCL is used to specify the location(s) of one or more cataloged procedure libraries. It tells the system where to search for procedures referenced using EXEC PROC=... in the job. This statement is placed immediately after the JOB statement and before any EXEC statements that call cataloged procedures. The ORDER= keyword allows you to list multiple libraries, which the system will search in the specified order. It does not apply to program execution libraries (use JOBLIB or STEPLIB for that).
+
 JCLLIB is helpful in environments where procedures are stored outside the system default procedure library (SYS1.PROCLIB). It allows modularity and separation of production, development, or test procedures. The libraries specified in JCLLIB must be cataloged PDS or PDSE datasets. This statement does not execute any code—it only defines a search path for procedures. Proper use of JCLLIB enables flexibility and maintainability in managing JCL procedures across different teams or systems.
-Example
-//MYJOB    JOB (1234),'TEST JCLLIB'
+
+**Example**
+``` //MYJOB    JOB (1234),'TEST JCLLIB'
 //JCLLIB   JCLLIB ORDER=(MY.PROCLIB1,MY.PROCLIB2)
-//STEP1    EXEC PROC=MYPROC
+//STEP1    EXEC PROC=MYPROC ```
  
  Explanation:
 •	MY.PROCLIB1 and MY.PROCLIB2 are user-defined procedure libraries (PDS or PDSE).
