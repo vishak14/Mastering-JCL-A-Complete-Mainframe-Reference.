@@ -217,7 +217,9 @@ JCLLIB is helpful in environments where procedures are stored outside the system
 
 **Example**
 ``` //MYJOB    JOB (1234),'TEST JCLLIB' ```
+
 ``` //JCLLIB   JCLLIB ORDER=(MY.PROCLIB1,MY.PROCLIB2) ```
+
 ``` //STEP1    EXEC PROC=MYPROC ```
  
  **Explanation:**
