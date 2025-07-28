@@ -45,17 +45,10 @@ Used to define:
 
 `//MYJOB JOB (ACCT),'SAMPLE JOB',CLASS=A,MSGCLASS=X,MSGLEVEL=(1,1)`
 
-Parameter	Description	Example	Notes
-| Parameter     | Description                  | Example            | Notes                                                                 |
-|---------------|------------------------------|--------------------|-----------------------------------------------------------------------|
-| jobname       | Name of the job (1–8 characters) | MYJOB              | First character must be alphabetic or national ($, #, @).         |
-| JOB           | Indicates the start of the job | JOB                | Required keyword.                                                    |
-| (acct-info)   | Accounting information         | (12345,DEPT01)     | Used for tracking resource usage. Site-specific.                     |
-| 'description' | Job description or title       | 'MONTH-END REPORT' | Optional, for documentation only.                                    |
 
 <table>
   <thead>
-    <tr style="background-color:#4472C4; color:white">
+    <tr style="background-color:#4472C4; color:Blue">
       <th>Parameter</th>
       <th>Description</th>
       <th>Example</th>
