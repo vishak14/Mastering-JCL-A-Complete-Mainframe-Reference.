@@ -216,6 +216,7 @@ The JCLLIB statement in JCL is used to specify the location(s) of one or more ca
 JCLLIB is helpful in environments where procedures are stored outside the system default procedure library (SYS1.PROCLIB). It allows modularity and separation of production, development, or test procedures. The libraries specified in JCLLIB must be cataloged PDS or PDSE datasets. This statement does not execute any code—it only defines a search path for procedures. Proper use of JCLLIB enables flexibility and maintainability in managing JCL procedures across different teams or systems.
 
 **Example**
+
 ``` //MYJOB    JOB (1234),'TEST JCLLIB' ```
 
 ``` //JCLLIB   JCLLIB ORDER=(MY.PROCLIB1,MY.PROCLIB2) ```
@@ -223,10 +224,11 @@ JCLLIB is helpful in environments where procedures are stored outside the system
 ``` //STEP1    EXEC PROC=MYPROC ```
  
  **Explanation:**
-	- MY.PROCLIB1 and MY.PROCLIB2 are user-defined procedure libraries (PDS or PDSE).
- 	- The system will search for the procedure MYPROC in MY.PROCLIB1 first.
-  	- If not found, it will then look in MY.PROCLIB2.
-   	- If still not found, the system checks the default library like SYS1.PROCLIB.
+- MY.PROCLIB1 and MY.PROCLIB2 are user-defined procedure libraries (PDS or PDSE).
+- The system will search for the procedure MYPROC in MY.PROCLIB1 first.
+- If not found, it will then look in MY.PROCLIB2.
+- If still not found, the system checks the default library like SYS1.PROCLIB.
+  
 This setup is useful when you have custom procedures for development, testing, or environment-specific jobs and want to keep them separate from the system libraries.
 
 
@@ -236,22 +238,26 @@ The JOBLIB statement in JCL is used to specify a library (or libraries) that con
 You can specify multiple datasets in JOBLIB using concatenation, and they will be searched in order. It provides a way to test programs from custom or private libraries without altering global system settings. JOBLIB cannot be used inside a cataloged procedure; for such cases, STEPLIB should be used. If both JOBLIB and STEPLIB are omitted, the system defaults to searching its standard libraries. Unlike JCLLIB, which points to procedure libraries, JOBLIB is strictly for executable program libraries. Proper use of JOBLIB enhances modularity and control in program execution across batch jobs.
 
 **Syntax**
+
 ``` //JOBLIB  DD  DSN=library.name,DISP=SHR ```
-	- DSN= specifies the dataset name (usually a PDS or PDSE) where the executable (load module) resides.
-	- DISP=SHR allows shared access to the library.
+
+ - DSN= specifies the dataset name (usually a PDS or PDSE) where the executable (load module) resides.
+ - DISP=SHR allows shared access to the library.
+
 
 You can concatenate multiple libraries like this:
-//JOBLIB  DD  DSN=library1.name,DISP=SHR
-//        DD  DSN=library2.name,DISP=SHR
+``` //JOBLIB  DD  DSN=library1.name,DISP=SHR ```
+
+``` //        DD  DSN=library2.name,DISP=SHR ```
  
- Example
-//MYJOB    JOB (123),'TEST JOB'
-//JOBLIB   DD  DSN=MY.LOAD.LIBRARY,DISP=SHR
-//STEP1    EXEC PGM=MYPROG
-//SYSPRINT DD  SYSOUT=*
-//SYSIN    DD  *
-  input parameters
-/*
+ **Example**
+``` //MYJOB    JOB (123),'TEST JOB' ```
+``` //JOBLIB   DD  DSN=MY.LOAD.LIBRARY,DISP=SHR ```
+``` //STEP1    EXEC PGM=MYPROG ```
+``` //SYSPRINT DD  SYSOUT=* ```
+``` //SYSIN    DD  * ```
+```  input parameters ```
+``` /* ```
 What this does:
 •	Tells the system to load MYPROG from the dataset MY.LOAD.LIBRARY.
 •	The JOBLIB applies to all steps in this job (except those inside cataloged procedures).
