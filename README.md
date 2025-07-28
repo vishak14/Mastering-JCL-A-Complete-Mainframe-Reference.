@@ -44,8 +44,8 @@ Used to define:
 ### Syntax Example:
 
 `//MYJOB JOB (ACCT),'SAMPLE JOB',CLASS=A,MSGCLASS=X,MSGLEVEL=(1,1)`
-
-
+<!-- Empty line above the table -->
+<!-- Empty line above the table -->
 
 
 <table>
@@ -85,14 +85,13 @@ Used to define:
   </tbody>
 </table>
 
+<!-- Empty line above the table -->
+<!-- Empty line above the table -->
 
-jobname	Name of the job (1–8 characters)	MYJOB	First character must be alphabetic or national ($, #, @).
-JOB	Indicates the start of the job	JOB	Required keyword.
-(acct-info)	Accounting information	(12345,DEPT01)	Used for tracking resource usage. Site-specific.
-'description'	Job description or title	'MONTH-END REPORT'	Optional, for documentation only.
 
-Execution Control Parameters
-CLASS
+###Execution Control Parameters
+<!-- Empty line above the table -->
+###CLASS
 The CLASS parameter in a JCL JOB statement determines the job's classification for processing and routing in the JES (Job Entry Subsystem). It is used to group jobs based on similar processing characteristics such as priority, resource usage, or execution time. Valid values for CLASS are typically single alphanumeric characters (A–Z, 0–9), and their meanings are defined by the installation. For example, CLASS=A might represent low-priority batch jobs, while CLASS=Z could be reserved for high-priority real-time tasks. The system operator or JES scheduler uses this classification to decide when and where the job will run.
 In a typical enterprise mainframe environment, CLASS values in JCL are site-defined by system administrators and mapped to execution queues with specific characteristics. 
 Here's how they’re usually organized:
