@@ -419,40 +419,61 @@ You can also override DD statements from within the job step. This means you can
 - **Efficiency:** Overrides allow you to avoid duplicating JCL code by modifying only the necessary elements of a PROC or job step.
   
  **Types of Overrides**
-•	Parameter Override: Overriding symbolic parameters or procedure parameters.
-•	DD Override: Overriding dataset names or other DD attributes defined in the PROC.
-•	Step-specific Override: Modifying job step parameters such as time, region, or condition codes.
+- Parameter Override: Overriding symbolic parameters or procedure parameters.
+- DD Override: Overriding dataset names or other DD attributes defined in the PROC.
+- Step-specific Override: Modifying job step parameters such as time, region, or condition codes.
  
-Example of Complete Override in JCL
-//MYJOB    JOB (ACCT),'FULL PROC OVERRIDE'
-//JCLLIB   JCLLIB ORDER=(MY.PROCLIB)
-//STEP1    EXEC PROC=MYPROC,PARM1='NEWVALUE'
-//MYPROC.DD1 DD   DSN=NEW.DATASET,DISP=SHR
-In this example:
-•	PARM1 is overridden with 'NEWVALUE' for STEP1.
-•	The DD1 dataset within the PROC is overridden to use NEW.DATASET.
-Conclusion:
+**Example of Complete Override in JCL**
+
+``` //MYJOB    JOB (ACCT),'FULL PROC OVERRIDE' ```
+
+``` //JCLLIB   JCLLIB ORDER=(MY.PROCLIB) ```
+
+``` //STEP1    EXEC PROC=MYPROC,PARM1='NEWVALUE' ```
+
+``` //MYPROC.DD1 DD   DSN=NEW.DATASET,DISP=SHR ```
+
+**In this example:**
+- PARM1 is overridden with 'NEWVALUE' for STEP1.
+- The DD1 dataset within the PROC is overridden to use NEW.DATASET.
+
+**Conclusion:**
+
 Overrides in JCL provide a powerful way to tailor the execution of cataloged procedures or specific job steps based on different conditions or needs without modifying the underlying PROC itself. It enhances reusability and flexibility in job management.
-JCL Column Layout (Fixed Format)
+
+###JCL Column Layout (Fixed Format)
+
+
 Here's a breakdown of what each column range typically represents:
-Column Range	Purpose
-1–2	Always // to indicate the start of a JCL statement.
-3–10	Name Field (e.g., job name, step name, DD name).
-11–15	Operation Field (e.g., JOB, EXEC, DD).
-16–71	Parameters Field (used for keywords and values).
-72–80	Sequence Numbers (Optional) – Often ignored but can be used for line tracking in legacy environments.
 
- Detailed Column Explanation
-Columns 1–2: JCL Identifier
+| **Column Range** | **Purpose** |
+|------------------|-------------|
+| 1–2              | Always `//` to indicate the start of a JCL statement. |
+| 3–10             | Name Field (e.g., job name, step name, DD name).      |
+| 11–15            | Operation Field (e.g., `JOB`, `EXEC`, `DD`).          |
+| 16–71            | Parameters Field (used for keywords and values).      |
+| 72–80            | Sequence Numbers (Optional) – Often ignored but can be used for line tracking in legacy environments. |
+
+
+
+ ### Detailed Column Explanation
+
+**Columns 1–2: JCL Identifier**
+
 In JCL, columns 1–2 are reserved for JCL identifiers or indicators. A commonly used identifier is //*, which marks a comment line. If columns 1–2 are blank or do not contain a valid identifier, the system may treat the line as invalid or ignore it during execution.
-Columns 1–2	Meaning	Description
-//	JCL Statement Indicator	Required for all executable JCL statements.
-/*	Data Delimiter	Marks the end of in-stream data (e.g., SYSIN).
-//*	Comment Line	Treated as a comment; not executed.
---	JES2 Command (optional use)	Used for JES2 control statements.
-//name	Named JCL Statement (starts at 3rd col)	Example: //STEP1 EXEC PGM=...
 
- Columns 3–10: Name Field
+| **Columns 1–2** | **Meaning**                     | **Description** |
+|----------------|----------------------------------|-----------------|
+| `//`           | JCL Statement Indicator          | Required for all executable JCL statements. |
+| `/*`           | Data Delimiter                   | Marks the end of in-stream data (e.g., SYSIN). |
+| `//*`          | Comment Line                     | Treated as a comment; not executed. |
+| `--`           | JES2 Command (optional use)      | Used for JES2 control statements. |
+| `//name`       | Named JCL Statement (starts at 3rd col) | Example: `//STEP1 EXEC PGM=...` |
+
+
+
+
+**Columns 3–10: Name Field**
 Refers to the name given to various elements like JOBs, EXEC steps, PROCs, and DD statements. Left-justified, up to 8 characters. •  must begin in column 3 and follow IBM naming conventions: 1–8 characters, starting with an alphabetic character (A–Z). They help uniquely identify parts of a JCL so that overrides, referencing, and debugging can be done easily.For example, you can use MYSTEP to name a step and later override it using MYSTEP.DDNAME. Must not contain special characters or spaces and are crucial for job management and readability.
 Optional in some cases (e.g., continuation lines, comments).
 Example:
