@@ -283,6 +283,7 @@ The EXEC statement in JCL is used to execute a program or a cataloged procedure.
 Optional parameters like COND=, TIME=, or REGION= can be used to control execution conditions, CPU limits, or memory usage. If the EXEC statement calls a cataloged procedure, you can override or add DD statements within the step. The EXEC step begins execution only if the JOB and any previous steps meet the necessary conditions. It works closely with DD (Data Definition) statements, which describe the input and output datasets used during execution. Overall, the EXEC statement is essential for defining the job's workflow and is one of the most frequently used statements in JCL.
 
 **Syntax Example:**
+
 ``` //STEP01 EXEC PGM=MYCOBOL ```
 - STEP01 = Step name
 - PGM=MYCOBOL = Tells the OS to load and execute the MYCOBOL program
