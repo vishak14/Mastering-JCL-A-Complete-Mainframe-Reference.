@@ -117,9 +117,9 @@ Here's how they’re usually organized:
  **Operator Console View:** Operators monitor jobs by CLASS in SDSF or IOF, allowing them to manage job throughput, balance workload, and troubleshoot bottlenecks.
 
 
-####Important Notes:
- - *Never assume class meanings across organizations—always refer to the site’s standards or configuration documents.*
- - *Some environments restrict certain classes to specific user IDs or departments.*
+#### Important Notes:
+ - > *Never assume class meanings across organizations—always refer to the site’s standards or configuration documents.*
+ - > *Some environments restrict certain classes to specific user IDs or departments.*
 
  MSGCLASS
 The MSGCLASS parameter in a JCL JOB statement controls where the system routes the job’s output, including JCL messages, allocation messages, and SYSOUT data. It uses a single alphanumeric character (A–Z or 0–9), and its meaning is defined by the installation. Each MSGCLASS value represents a distinct output class, such as a JES spool queue, a printer, or an output management tool like Axiom. For instance, MSGCLASS=X might route output to SDSF for developers to view, while MSGCLASS=A could send it directly to a physical printer. The JES subsystem uses this parameter to determine how to handle the output and who should have access to it. Administrators configure these classes to match operational needs, security policies, or business processes. When integrated with tools like Axiom, MSGCLASS becomes a trigger for routing output to advanced formatting and distribution services. It works in conjunction with SYSOUT and OUTPUT statements to fine-tune output behavior. Choosing the right MSGCLASS ensures proper output delivery, visibility, and archival handling. Overall, it is a key element in managing job output efficiently in a mainframe environment. 
