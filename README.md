@@ -269,48 +269,62 @@ You can concatenate multiple libraries like this:
 
 
 
-What this does:
-•	Tells the system to load MYPROG from the dataset MY.LOAD.LIBRARY.
-•	The JOBLIB applies to all steps in this job (except those inside cataloged procedures).
-Notes
-•	Only one JOBLIB is allowed per job, and it must be directly after the JOB statement.
-•	Use STEPLIB if you need step-level control or you're inside a cataloged procedure.
+**What this does?**
+- Tells the system to load MYPROG from the dataset MY.LOAD.LIBRARY.
+- The JOBLIB applies to all steps in this job (except those inside cataloged procedures).
+  
+**Notes:**
+- > *Only one JOBLIB is allowed per job, and it must be directly after the JOB statement.*
+- > *Use STEPLIB if you need step-level control or you're inside a cataloged procedure.*
 
-EXEC Statement
+**EXEC Statement**
 The EXEC statement in JCL is used to execute a program or a cataloged procedure. It is the core command that tells the system what action to perform in a job step. When executing a program, you use the PGM= parameter (e.g., PGM=IEFBR14). When executing a procedure, you use the PROC= parameter (e.g., EXEC PROC=MYPROC). Each EXEC statement represents a single job step, and a JCL can have multiple EXEC steps.
+
 Optional parameters like COND=, TIME=, or REGION= can be used to control execution conditions, CPU limits, or memory usage. If the EXEC statement calls a cataloged procedure, you can override or add DD statements within the step. The EXEC step begins execution only if the JOB and any previous steps meet the necessary conditions. It works closely with DD (Data Definition) statements, which describe the input and output datasets used during execution. Overall, the EXEC statement is essential for defining the job's workflow and is one of the most frequently used statements in JCL.
-Syntax Example:
-//STEP01 EXEC PGM=MYCOBOL
-•	STEP01 = Step name
-•	PGM=MYCOBOL = Tells the OS to load and execute the MYCOBOL program
-//STEP02 EXEC PROC=MYPROC
+
+**Syntax Example:**
+``` //STEP01 EXEC PGM=MYCOBOL ```
+- STEP01 = Step name
+- PGM=MYCOBOL = Tells the OS to load and execute the MYCOBOL program
+  
+``` //STEP02 EXEC PROC=MYPROC ```
 
 You can also use:
-•	COND=(4,LT) to conditionally skip steps
-•	PARM= to pass runtime parameters
-PROC
-The PROC (short for procedure) in JCL refers to a cataloged or in-stream set of predefined JCL statements that can be reused across multiple jobs. It allows you to modularize and standardize job steps by defining common logic once and invoking it with an EXEC PROC=... statement. Procedures can contain multiple steps, each with its own EXEC and DD statements. A cataloged procedure is stored in a procedure library (like SYS1.PROCLIB or a custom library specified via JCLLIB), while an in-stream procedure is defined within the job itself using //PROCNAME PROC and ended with PEND.
+- COND=(4,LT) to conditionally skip steps
+- PARM= to pass runtime parameters
+  
+**PROC**
+The PROC (short for procedure) in JCL refers to a cataloged or in-stream set of predefined JCL statements that can be reused across multiple jobs. It allows you to modularize and standardize job steps by defining common logic once and invoking it with an EXEC PROC=... statement. Procedures can contain multiple steps, each with its own EXEC and DD statements. A cataloged procedure is stored in a procedure library (like SYS1.PROCLIB or a custom library specified via JCLLIB), while an in-stream procedure is defined within the job itself using. 
+
+- //PROCNAME PROC and ended with PEND.
+  
 When you execute a PROC, you can override its DD statements or add new ones in the calling JCL step. This makes procedures flexible and adaptable to different runtime needs without altering the original PROC definition. Procedures simplify job maintenance by reducing duplication and improving readability. Using PROCs also helps ensure consistency in job execution across teams or environments. The use of cataloged procedures is especially common in enterprise environments where jobs have many repetitive or standardized steps. Overall, the PROC feature in JCL improves efficiency, modularity, and manageability of batch processing.
+
 A JCL job can invoke multiple PROCs, but only one procedure (PROC) can be executed per EXEC statement.
-•	There is no strict limit on how many different PROCs a single job can call—as long as system limits (like the number of job steps 255) are not exceeded.
-•	Each EXEC PROC=... statement calls one cataloged or in-stream procedure.
-•	A procedure itself can have multiple steps and may reference additional datasets or include symbolic parameters.
-•	If you define in-stream procedures, they must all appear before the first EXEC that calls any of them, and each must end with PEND.
-Example :
-//MYJOB   JOB (ACCT),'MULTIPLE PROCS'
-//JCLLIB  JCLLIB ORDER=(MY.PROCLIB)
-//STEP1   EXEC PROC=BACKUPPROC
-//STEP2   EXEC PROC=REPORTPROC
-//STEP3   EXEC PROC=ARCHIVEPROC
+- There is no strict limit on how many different PROCs a single job can call—as long as system limits (like the number of job steps 255) are not exceeded.
+- Each EXEC PROC=... statement calls one cataloged or in-stream procedure.
+- A procedure itself can have multiple steps and may reference additional datasets or include symbolic parameters.
+- If you define in-stream procedures, they must all appear before the first EXEC that calls any of them, and each must end with PEND.
+
+**Example:**
+``` //MYJOB   JOB (ACCT),'MULTIPLE PROCS' ```
+
+``` //JCLLIB  JCLLIB ORDER=(MY.PROCLIB) ```
+
+``` //STEP1   EXEC PROC=BACKUPPROC ```
+
+``` //STEP2   EXEC PROC=REPORTPROC ```
+``` //STEP3   EXEC PROC=ARCHIVEPROC ```
+
 Here, the job calls three different procedures, each on its own step. So, while a single EXEC statement can only run one PROC, a job can use many EXEC statements, each calling a different procedure.
 Here’s a complete example showing how to define and call an in-stream procedure in JCL
 
 
-In-Stream PROC
-•	Definition Location: Defined within the JCL job itself, between PROC and PEND.
-•	Invocation: Called within the same job using EXEC procname.
-•	Reusability: Not reusable outside the current job.
-•	Maintenance: Can clutter job stream; changes need to be repeated across jobs if reused.
+**In-Stream PROC**
+- **Definition Location:** Defined within the JCL job itself, between PROC and PEND.
+- **Invocation:** Called within the same job using EXEC procname.
+- **Reusability:** Not reusable outside the current job.
+- **Maintenance:** Can clutter job stream; changes need to be repeated across jobs if reused.
 
  Example with In-Stream PROC
 //MYJOB     JOB (123),'IN-STREAM PROC DEMO'
