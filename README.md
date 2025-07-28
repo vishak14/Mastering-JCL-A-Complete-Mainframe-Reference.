@@ -359,48 +359,66 @@ Here’s a complete example showing how to define and call an in-stream procedur
 - //USEPROC EXEC MYPROC calls the MYPROC defined earlier in the same job.
 
 **Key Rules:**
-•	All in-stream procedures must be defined before they are called.
-•	They must appear after the JOB statement and before the EXEC that uses them.
-•	PEND is mandatory to close the in-stream PROC definition.
+- > *All in-stream procedures must be defined before they are called.*
+- > *They must appear after the JOB statement and before the EXEC that uses them.*
+- > *PEND is mandatory to close the in-stream PROC definition.*
 
 **External (Cataloged) PROC**
-•	Definition Location: Stored outside the JCL in a procedure library (e.g., SYS1.PROCLIB or a user-defined one).
-•	Invocation: Called using EXEC PROC=procname in any JCL that has access to the library (possibly via JCLLIB).
-•	Reusability: Highly reusable across many jobs.
-•	Maintenance: Easier to maintain — centralized and shared by many jobs.
-Example:
-//MYJOB    JOB (ACCT),'CALLING CATALOGED PROC'
-//JCLLIB   JCLLIB ORDER=(MY.PROCLIB)
-//STEP1    EXEC PROC=MYPROC
+- **Definition Location:** Stored outside the JCL in a procedure library (e.g., SYS1.PROCLIB or a user-defined one).
+- **Invocation:** Called using EXEC PROC=procname in any JCL that has access to the library (possibly via JCLLIB).
+- **Reusability:** Highly reusable across many jobs.
+- **Maintenance:** Easier to maintain — centralized and shared by many jobs.
+  
+**Example:**
+``` //MYJOB    JOB (ACCT),'CALLING CATALOGED PROC' ```
+
+``` //JCLLIB   JCLLIB ORDER=(MY.PROCLIB) ```
+
+``` //STEP1    EXEC PROC=MYPROC ```
  
 
-Override:
+**Override:**
 In JCL, override refers to the ability to modify or customize certain parameters in cataloged procedures (PROCs) or DD statements when the procedure is invoked within a job. This allows you to change the behavior of a PROC or step without modifying the PROC itself, providing flexibility in job execution.
-Overriding PROC Parameters
+
+**Overriding PROC Parameters**
 When invoking a cataloged PROC, you can override parameters within the PROC definition. This allows you to customize the behavior of the PROC based on the specific needs of the job.
-Example:
-//MYJOB    JOB (ACCT),'PROC OVERRIDE EXAMPLE'
-//JCLLIB   JCLLIB ORDER=(MY.PROCLIB)
-//STEP1    EXEC PROC=MYPROC,PARM1='OVERRIDDEN'
-In the example:
-•	MYPROC is a cataloged PROC that has a parameter PARM1 defined.
-•	When calling MYPROC, the PARM1 parameter is overridden with the value 'OVERRIDDEN'.
-•	This value will be used in the PROC instead of the default value defined in the PROC.
-Overriding DD Statements
+
+**Example:**
+
+``` //MYJOB    JOB (ACCT),'PROC OVERRIDE EXAMPLE' ```
+
+``` //JCLLIB   JCLLIB ORDER=(MY.PROCLIB) ```
+
+``` //STEP1    EXEC PROC=MYPROC,PARM1='OVERRIDDEN' ```
+
+**In the example:**
+- MYPROC is a cataloged PROC that has a parameter PARM1 defined.
+- When calling MYPROC, the PARM1 parameter is overridden with the value 'OVERRIDDEN'.
+- This value will be used in the PROC instead of the default value defined in the PROC.
+  
+**Overriding DD Statements**
+
 You can also override DD statements from within the job step. This means you can change dataset names, allocation parameters, etc., for specific steps that call a cataloged PROC.
-Example:
-//MYJOB    JOB (ACCT),'DD OVERRIDE EXAMPLE'
-//JCLLIB   JCLLIB ORDER=(MY.PROCLIB)
-//STEP1    EXEC PROC=MYPROC
-//MYPROC.DD1 DD   DSN=MY.OVERRIDDEN.DATASET,DISP=SHR
-In this case:
-•	The DD1 dataset in MYPROC is overridden with a new dataset name MY.OVERRIDDEN.DATASET for STEP1.
-•	This will use the new dataset only for this particular job step, without modifying the PROC itself.
- Why Use Overrides?
-•	Flexibility: You can customize the behavior of a PROC or job step without modifying the PROC source or procedure library.
-•	Reusability: A single cataloged PROC can be reused in multiple jobs with different parameter values or dataset names.
-•	Efficiency: Overrides allow you to avoid duplicating JCL code by modifying only the necessary elements of a PROC or job step.
- Types of Overrides
+
+**Example:**
+``` //MYJOB    JOB (ACCT),'DD OVERRIDE EXAMPLE' ```
+
+``` //JCLLIB   JCLLIB ORDER=(MY.PROCLIB) ```
+
+``` //STEP1    EXEC PROC=MYPROC ```
+
+``` //MYPROC.DD1 DD   DSN=MY.OVERRIDDEN.DATASET,DISP=SHR ```
+
+**In this case:**
+- The DD1 dataset in MYPROC is overridden with a new dataset name MY.OVERRIDDEN.DATASET for STEP1.
+- This will use the new dataset only for this particular job step, without modifying the PROC itself.
+
+**Why Use Overrides?**
+- **Flexibility:** You can customize the behavior of a PROC or job step without modifying the PROC source or procedure library.
+- **Reusability:** A single cataloged PROC can be reused in multiple jobs with different parameter values or dataset names.
+- **Efficiency:** Overrides allow you to avoid duplicating JCL code by modifying only the necessary elements of a PROC or job step.
+  
+ **Types of Overrides**
 •	Parameter Override: Overriding symbolic parameters or procedure parameters.
 •	DD Override: Overriding dataset names or other DD attributes defined in the PROC.
 •	Step-specific Override: Modifying job step parameters such as time, region, or condition codes.
