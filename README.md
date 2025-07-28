@@ -46,6 +46,13 @@ Used to define:
 `//MYJOB JOB (ACCT),'SAMPLE JOB',CLASS=A,MSGCLASS=X,MSGLEVEL=(1,1)`
 
 Parameter	Description	Example	Notes
+| Parameter     | Description                  | Example            | Notes                                                                 |
+|---------------|------------------------------|--------------------|-----------------------------------------------------------------------|
+| jobname       | Name of the job (1–8 characters) | MYJOB              | First character must be alphabetic or national ($, #, @).         |
+| JOB           | Indicates the start of the job | JOB                | Required keyword.                                                    |
+| (acct-info)   | Accounting information         | (12345,DEPT01)     | Used for tracking resource usage. Site-specific.                     |
+| 'description' | Job description or title       | 'MONTH-END REPORT' | Optional, for documentation only.                                    |
+
 jobname	Name of the job (1–8 characters)	MYJOB	First character must be alphabetic or national ($, #, @).
 JOB	Indicates the start of the job	JOB	Required keyword.
 (acct-info)	Accounting information	(12345,DEPT01)	Used for tracking resource usage. Site-specific.
