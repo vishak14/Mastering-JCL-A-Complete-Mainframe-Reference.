@@ -703,12 +703,14 @@ RLSE: release unused space after step
 - AVE (Average Block)
 
 
-  | **Unit** | **Meaning**               | **Level**        | **Use Case**                             | **Example**                  |
-|----------|---------------------------|------------------|------------------------------------------|------------------------------|
-| `TRK`    | Track on a disk           | Physical Unit    | Precise allocation for smaller datasets  | `SPACE=(TRK,(10,5))`         |
-| `CYL`    | Cylinder (group of tracks)| Physical Unit    | Larger datasets needing more space       | `SPACE=(CYL,(5,2))`          |
-| `BLK`    | Block (logical data block)| Logical Unit     | Used when block size is known            | `SPACE=(BLK,(500,100))`      |
-| `AVE`    | Average block size        | Logical Estimate | Estimated space when block size may vary | `AVGREC=U` with `SPACE=(TRK,...)` |
+
+| **Unit** | **Meaning**                   | **Level**         | **Use Case**                                 | **Example**                        |
+|----------|-------------------------------|-------------------|----------------------------------------------|------------------------------------|
+| `TRK`    | Track on a disk               | Physical Unit     | Precise allocation for smaller datasets      | `SPACE=(TRK,(10,5))`               |
+| `CYL`    | Cylinder (group of tracks)    | Physical Unit     | Larger datasets needing more space           | `SPACE=(CYL,(5,2))`                |
+| `BLK`    | Block (logical data block)    | Logical Unit      | Used when block size is known                | `SPACE=(BLK,(500,100))`            |
+| `AVE`    | Average block size            | Logical Estimate  | Estimated space when block size may vary     | `AVGREC=U` with `SPACE=(TRK,...)`  |
+
 
 
 
