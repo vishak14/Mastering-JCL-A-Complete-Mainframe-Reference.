@@ -777,53 +777,74 @@ These datasets save resources by ensuring temporary data doesn’t remain in the
 
 ## Procedures and Symbolic Parameters
 In JCL (Job Control Language), a PROC (Procedure) is a reusable set of JCL statements defined to simplify job maintenance and promote standardization. A PROC can be defined in-stream (within the same JCL) using //PROCNAME PROC or stored as a cataloged procedure in a procedure library (PROCLIB). The PROC contains one or more steps, each typically invoking a program, and can accept parameters passed from the job using EXEC PROCNAME with symbolic substitution (e.g., &DSN). It helps eliminate redundancy when multiple jobs share common processing logic, such as backup, sort, or load routines. You can override individual step parameters from the calling JCL using parameter overrides or JCL overrides. Procedures are invoked using the EXEC statement and can be nested, though best practices discourage deep nesting. Using PROCs enhances job modularity, makes changes easier to implement, and supports enterprise-level JCL standardization.
-o	Cataloged Procedure
-o	In-stream Procedure
 
-Cataloged Procedure:
+- Cataloged Procedure
+- In-stream Procedure
+
+### Cataloged Procedure:
+
 A Cataloged Procedure in JCL is a predefined and reusable set of JCL statements stored as a member in a procedure library (PROCLIB). It allows multiple jobs to call the same procedure using the EXEC PROCNAME statement, promoting standardization and ease of maintenance. Parameters can be passed or overridden from the calling job, making the procedure flexible and adaptable for various job requirements.
 
-In-stream Procedure
-An In-stream Procedure in JCL is a set of JCL statements defined within the same job, typically between the //PROCNAME PROC and // PEND statements. It allows you to encapsulate reusable job steps locally, without the need to store them in a cataloged procedure library. In-stream procedures are useful for jobs that require limited reuse or temporary logic. You can pass symbolic parameters to in-stream procedures just like cataloged ones, using the EXEC PROCNAME,PARAM=VALUE syntax. This approach offers flexibility during development or testing when cataloged procedures are not yet finalized.
+### In-stream Procedure
+
+An In-stream Procedure in JCL is a set of JCL statements defined within the same job, typically between the **//PROCNAME PROC and // PEND** statements. It allows you to encapsulate reusable job steps locally, without the need to store them in a cataloged procedure library. In-stream procedures are useful for jobs that require limited reuse or temporary logic. You can pass symbolic parameters to in-stream procedures just like cataloged ones, using the EXEC PROCNAME,PARAM=VALUE syntax. This approach offers flexibility during development or testing when cataloged procedures are not yet finalized.
 
 Symbolic parameters in JCL are placeholders (variables) defined in a PROC (procedure) that allow dynamic substitution of values when the PROC is called. They begin with an ampersand (&) (e.g., &DSN, &STEP) and are usually defined in the PROC for values like dataset names, program names, or parameter strings. When a job executes the PROC, it can override these symbolic parameters by specifying values in the EXEC statement using the PARM= or positional notation (e.g., EXEC PROCNAME,DSN=MY.DATA.SET), making the procedure reusable and flexible
  
 ## Conditional Execution in JCL
-COND Parameter
+
+### COND Parameter
+
 The COND parameter in JCL specifies conditions under which a step in a job should be executed or skipped. It can be used to define job or step conditions based on the return codes from previous steps. The COND parameter evaluates the return code from the preceding step, and if the condition is met, the current step can either be bypassed or executed. It is typically written in the format COND=(condition,stepname), where the condition checks return codes or system status. COND allows for better control flow and conditional execution, reducing the need for manual intervention during job execution. 
 
-//STEP02 EXEC PGM=XYZ,COND=(4,LT,STEP01)
+``` //STEP02 EXEC PGM=XYZ,COND=(4,LT,STEP01) ```
+
 Means: if STEP01 RC < 4, skip STEP02.
 
-Operator	Description	Example	Meaning
-EQ	Equal to a specified value.	COND=(0,EQ)	The step is executed if the return code is equal to 0.
-NE	Not equal to a specified value.	COND=(4,NE)	The step is executed if the return code is not equal to 4.
-GT	Greater than a specified value.	COND=(8,GT)	The step is executed if the return code is greater than 8.
-GE	Greater than or equal to a specified value.	COND=(2,GE)	The step is executed if the return code is greater than or equal to 2.
-LT	Less than a specified value.	COND=(6,LT)	The step is executed if the return code is less than 6.
-LE	Less than or equal to a specified value.	COND=(3,LE)	The step is executed if the return code is less than or equal to 3.
-EQ/NE/GT/GE/LT/LE + stepname	Allows conditional execution based on specific conditions of previous steps, using the return codes of earlier steps.	COND=(4,NE,STEP1)	Evaluates the return code of STEP1 to determine if the step should execute.
+| **Operator**         | **Description**                                                                                   | **Example**             | **Meaning** |
+|----------------------|---------------------------------------------------------------------------------------------------|--------------------------|-------------|
+| `EQ`                 | Equal to a specified value.                                                                       | `COND=(0,EQ)`            | The step is executed if the return code is equal to 0. |
+| `NE`                 | Not equal to a specified value.                                                                   | `COND=(4,NE)`            | The step is executed if the return code is not equal to 4. |
+| `GT`                 | Greater than a specified value.                                                                   | `COND=(8,GT)`            | The step is executed if the return code is greater than 8. |
+| `GE`                 | Greater than or equal to a specified value.                                                       | `COND=(2,GE)`            | The step is executed if the return code is greater than or equal to 2. |
+| `LT`                 | Less than a specified value.                                                                      | `COND=(6,LT)`            | The step is executed if the return code is less than 6. |
+| `LE`                 | Less than or equal to a specified value.                                                          | `COND=(3,LE)`            | The step is executed if the return code is less than or equal to 3. |
+| `EQ/NE/GT/GE/LT/LE + stepname` | Allows conditional execution based on return codes of specific previous steps.          | `COND=(4,NE,STEP1)`      | Evaluates the return code of STEP1 to determine if the step should execute. |
 
 
 
-IF/THEN/ELSE/ENDIF
+
+### IF/THEN/ELSE/ENDIF
+
 Used for more readable conditional logic.
-// IF (STEP01.RC = 0) THEN
-//STEP02 EXEC PGM=MYPGM
-// ELSE
-//STEP03 EXEC PGM=ERRORPGM
-// ENDIF
+
+``` // IF (STEP01.RC = 0) THEN ```
+
+``` //STEP02 EXEC PGM=MYPGM ```
+
+``` // ELSE ```
+
+``` //STEP03 EXEC PGM=ERRORPGM ```
+
+``` // ENDIF ```
+
  
 ## JCL Utilities
+
 ### IEFBR14
 IEFBR14 is a utility program in JCL that is commonly used for tasks like creating or deleting datasets without performing any actual processing. It is a dummy program that runs successfully with a return code of 0, making it ideal for allocating or deallocating datasets in a job step. Typically, it is used in scenarios where you need to allocate or delete datasets without performing any meaningful operation on the data itself.
-Example:
-//JOBNAME   JOB (ACCT),'USER',CLASS=A,MSGCLASS=X
-//STEP1     EXEC PGM=IEFBR14
-//DD1       DD   DSN=MY.DATASET,DISP=(NEW,CATLG,DELETE),
-//              SPACE=(CYL,(1,1)),UNIT=SYSDA
 
-Explanation:
+**Example:**
+
+``` //JOBNAME   JOB (ACCT),'USER',CLASS=A,MSGCLASS=X ```
+
+``` //STEP1     EXEC PGM=IEFBR14 ```
+
+``` //DD1       DD   DSN=MY.DATASET,DISP=(NEW,CATLG,DELETE), ```
+
+``` //              SPACE=(CYL,(1,1)),UNIT=SYSDA ```
+
+**Explanation:**
 
 STEP1 runs IEFBR14, which doesn't perform any processing but ensures the allocation of the dataset MY.DATASET.
 
@@ -838,6 +859,8 @@ SPACE=(CYL,(1,1)) allocates 1 cylinder of space.
 UNIT=SYSDA specifies the device type.
 
 In this case, IEFBR14 will successfully create MY.DATASET without actually performing any operation on it.
+
+
 ### IEBGENER
 IEBGENER is a utility in JCL used to copy data from one dataset to another, typically used for copying sequential datasets. It allows for optional data transformation, such as changing the record length or filtering specific data, during the copy process. The utility is commonly used for backup, report generation, or moving data between datasets in a system.
 Example:
