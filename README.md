@@ -748,20 +748,30 @@ DCB (Data Control Block) in JCL defines the attributes of a dataset, such as its
 ``` BLKSIZE=LRECL×Number of Records per Block\text{BLKSIZE} = \text{LRECL} \times \text{Number of Records per Block}BLKSIZE=LRECL×Number of Records per Block ``` 
 
 **Where:**
-LRECL is the logical record length (the size of each record in bytes).
-Number of Records per Block is the number of records that will be placed in a single block.
-For example, if LRECL is 80 bytes and you want to store 100 records per block:
+**LRECL** is the logical record length (the size of each record in bytes).
+
+**Number of Records** per Block is the number of records that will be placed in a single block.
+
+**For example,** if LRECL is 80 bytes and you want to store 100 records per block:
+
 BLKSIZE=80×100=8000 bytes\text{BLKSIZE} = 80 \times 100 = 8000 \text{ bytes}BLKSIZE=80×100=8000 bytes 
+
 This would mean that each block on the disk would be 8000 bytes in size.
-BLKSIZE is set to zero, it indicates that the value should be determined dynamically by the system. This is common for datasets where the system automatically decides the best block size or record length based on the environment or the dataset type.
-Temporary Datasets:
+
+**BLKSIZE** is set to zero, it indicates that the value should be determined dynamically by the system. This is common for datasets where the system automatically decides the best block size or record length based on the environment or the dataset type.
+
+### Temporary Datasets:
+
 Temporary datasets in JCL are datasets that are created for short-term use during the execution of a job and are automatically deleted after the job completes. These datasets are typically used for intermediate data storage, such as holding data between steps in a job or storing data that is not needed after the job ends.
-Key characteristics of temporary datasets:
-1.	AUTO-DELETE: Temporary datasets are usually deleted by the system once the job completes, without the need for explicit deletion in the JCL.
-2.	DISP Parameter: The DISP (Disposition) parameter is often set to (NEW,DELETE,DELETE) for temporary datasets, indicating that the dataset should be created (NEW), and deleted after the job (DELETE).
-3.	Use Cases: They are commonly used for holding intermediate results, work files, or staging data that doesn’t need to persist beyond the current job run.
+
+**Key characteristics of temporary datasets:**
+- AUTO-DELETE: Temporary datasets are usually deleted by the system once the job completes, without the need for explicit deletion in the JCL.
+- DISP Parameter: The DISP (Disposition) parameter is often set to (NEW,DELETE,DELETE) for temporary datasets, indicating that the dataset should be created (NEW), and deleted after the job (DELETE).
+- Use Cases: They are commonly used for holding intermediate results, work files, or staging data that doesn’t need to persist beyond the current job run.
+
 These datasets save resources by ensuring temporary data doesn’t remain in the system after it's no longer required.
-//TEMPFILE DD DSN=&&TEMP,SPACE=(TRK,(1,1)),UNIT=SYSDA
+
+``` //TEMPFILE DD DSN=&&TEMP,SPACE=(TRK,(1,1)),UNIT=SYSDA ```
  
 
 
