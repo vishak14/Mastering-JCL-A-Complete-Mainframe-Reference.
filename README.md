@@ -612,29 +612,42 @@ Referencing an existing dataset in JCL is done using the DD statement with the D
 
 Creating a new dataset in JCL involves using a DD statement with DISP=NEW to indicate that the dataset should be created during job execution. The DSN parameter assigns a name to the new dataset, while UNIT and SPACE define the storage device and space allocation, respectively. The DCB parameter (Data Control Block) specifies dataset attributes like record format and length. You can also include DISP=(NEW,CATLG,DELETE) to manage cataloging on success and deletion on failure. This approach is used when output or intermediate data needs to be stored permanently or temporarily.
 
-//OUTPUT   DD  DSN=MY.NEW.DATASET,DISP=(NEW,CATLG,DELETE),
-//             UNIT=SYSDA,SPACE=(TRK,(10,5)),DCB=(RECFM=FB,LRECL=80)
 
-Using a Temporary Dataset
+``` //OUTPUT   DD  DSN=MY.NEW.DATASET,DISP=(NEW,CATLG,DELETE), ```
+
+``` //             UNIT=SYSDA,SPACE=(TRK,(10,5)),DCB=(RECFM=FB,LRECL=80) ```
+
+**Using a Temporary Dataset**
 Using a temporary dataset in JCL is done by specifying a dataset name starting with && in the DSN parameter, such as DSN=&&TEMP. These datasets exist only for the duration of the job and are automatically deleted when the job ends. You must specify DISP=(NEW,DELETE) along with UNIT and SPACE to allocate storage. Temporary datasets are often used to pass intermediate data between steps within the same job. They are not cataloged and reduce the need for permanent storage management.
 
-//TEMPDD   DD  DSN=&&TEMPDATA,DISP=(NEW,DELETE),
-//             UNIT=SYSDA,SPACE=(CYL,(2,1))
-Use: Defines a temporary dataset that exists only during the job execution.
 
-&& signals that it’s temporary; it will be deleted after the job.
+``` //TEMPDD   DD  DSN=&&TEMPDATA,DISP=(NEW,DELETE), ```
 
-In-stream Data (DD )
+``` //             UNIT=SYSDA,SPACE=(CYL,(2,1)) ```
+
+**Use:** Defines a temporary dataset that exists only during the job execution.
+
+**&& **signals that it’s temporary; it will be deleted after the job.
+
+### In-stream Data (DD )
+
 In-stream data in JCL allows you to include input data directly within the job stream using the DD * or DD DATA statement. This method is useful for small amounts of data that a program reads during execution, such as control statements or parameters. The data follows the DD * line and ends with a delimiter, typically /*. No dataset name is needed because the data is supplied inline. It's a quick and convenient way to provide input without referencing an external dataset.
 
-//SYSIN    DD  *
-DATA LINE 1
-DATA LINE 2
-DATA LINE 3
-/* 
-Use: Supplies input data directly within the JCL.
 
-/* marks the end of the in-stream data.
+``` //SYSIN    DD  * ```
+
+``` DATA LINE 1 ```
+
+``` DATA LINE 2 ```
+
+``` DATA LINE 3 ```
+
+``` /* ```
+
+**Use:** Supplies input data directly within the JCL.
+
+
+**/*** marks the end of the in-stream data.
 
 
 
