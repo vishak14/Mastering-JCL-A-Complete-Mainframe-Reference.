@@ -882,59 +882,89 @@ IEBGENER is a utility in JCL used to copy data from one dataset to another, typi
 
 **Explanation:**
 
-' STEP1 executes IEBGENER to copy data. '
-SYSUT1 is the input dataset (SOURCE.FILE), which is opened in shared mode (DISP=SHR).
-SYSUT2 is the output dataset (DEST.FILE), created with new space allocation (DISP=NEW).
-SYSPRINT is the output report, which shows the utility’s status.
-SYSIN is set to DUMMY, meaning no control statements are used for transformation.
+- STEP1 executes IEBGENER to copy data.
+- SYSUT1 is the input dataset (SOURCE.FILE), which is opened in shared mode (DISP=SHR).
+- SYSUT2 is the output dataset (DEST.FILE), created with new space allocation (DISP=NEW).
+- SYSPRINT is the output report, which shows the utility’s status.
+- SYSIN is set to DUMMY, meaning no control statements are used for transformation.
 
 ### IEBCOPY
+
 IEBCOPY is a JCL utility used to copy, compress, or merge members within or between partitioned datasets (PDS or PDSE). It is commonly used to back up or reorganize libraries by removing deleted or unused space (compression). This utility can also selectively copy members, rename them during the copy, or copy entire libraries efficiently.
-Example:
-//JOBNAME  JOB (ACCT),'USER',CLASS=A,MSGCLASS=X
-//STEP1    EXEC PGM=IEBCOPY
-//SYSPRINT DD   SYSOUT=*
-//SYSUT1   DD   DSN=SOURCE.LIB,DISP=SHR       ← Source PDS
-//SYSUT2   DD   DSN=TARGET.LIB,DISP=OLD       ← Target PDS
-//SYSIN    DD   *
-  COPY OUTDD=SYSUT2,INDD=SYSUT1
-/* 
 
-Explanation:
-IEBCOPY copies members from SOURCE.LIB to TARGET.LIB.
-SYSUT1 is the input partitioned dataset (PDS).
-SYSUT2 is the output PDS, which must already exist.
+**Example:**
 
-SYSIN contains the COPY statement, specifying the input (INDD) and output (OUTDD) DD names.
+``` //JOBNAME  JOB (ACCT),'USER',CLASS=A,MSGCLASS=X ```
+
+``` //STEP1    EXEC PGM=IEBCOPY ```
+
+``` //SYSPRINT DD   SYSOUT=* ```
+
+``` //SYSUT1   DD   DSN=SOURCE.LIB,DISP=SHR       ← Source PDS ```
+
+``` //SYSUT2   DD   DSN=TARGET.LIB,DISP=OLD       ← Target PDS ```
+
+``` //SYSIN    DD   * ```
+
+```  COPY OUTDD=SYSUT2,INDD=SYSUT1 ```
+
+``` /* ``` 
+
+**Explanation:**
+
+- IEBCOPY copies members from SOURCE.LIB to TARGET.LIB.
+- SYSUT1 is the input partitioned dataset (PDS).
+- SYSUT2 is the output PDS, which must already exist.
+- SYSIN contains the COPY statement, specifying the input (INDD) and output (OUTDD) DD names.
+
 This is a basic copy operation; IEBCOPY can also be used for selective member copy, renaming, or compression.
-### SORT (DFSORT/SYNCSORT)
-SORT is a utility in JCL used to sort, merge, or copy data in sequential datasets based on specified field values. It supports various control statements to define sort keys, filtering criteria, and output formatting. SORT is widely used for organizing data, eliminating duplicates, and preparing reports or inputs for other programs. 
-Option	Purpose	Example	Explanation
-SORT FIELDS=	Specifies the fields and order to sort the records.	SORT FIELDS=(1,5,CH,A)	Sort records starting at position 1, length 5, character type, ascending order.
-MERGE FIELDS=	Merges multiple sorted input files into a single sorted output.	MERGE FIELDS=(10,2,CH,D)	Merge based on characters at position 10, length 2, descending.
-INCLUDE COND=	Includes only records that match specified condition(s).	INCLUDE COND=(20,3,CH,EQ,C'ABC')	Include only records where position 20 (length 3) equals 'ABC'.
-OMIT COND=	Excludes records that match specified condition(s).	OMIT COND=(5,2,ZD,GT,50)	Omit records where position 5 (length 2) as zoned decimal is greater than 50.
-SUM FIELDS=	Removes duplicates and optionally sums numeric fields.	SUM FIELDS=(30,4,ZD)	Sum values at position 30 (length 4) for duplicate records.
-OUTREC FIELDS=	Defines the format or fields for the output record.	OUTREC FIELDS=(1,10,21,5)	Output fields: position 1-10 and 21-25 from input.
-INREC FIELDS=	Reformat input records before processing.	INREC FIELDS=(1,5,10,3)	Use only fields 1–5 and 10–12 from input.
-OPTION COPY	Copies records without sorting or merging.	OPTION COPY	Simply copies data from input to output.
 
-Example:
-//SORTJOB  JOB (ACCT),'SORT EXAMPLE',CLASS=A,MSGCLASS=X
-//STEP1    EXEC PGM=SORT
-//SORTIN   DD DSN=INPUT.DATASET,DISP=SHR
-//SORTOUT  DD DSN=OUTPUT.DATASET,DISP=(NEW,CATLG,DELETE),
-//            SPACE=(CYL,(1,1)),UNIT=SYSDA
-//SYSOUT   DD SYSOUT=*
-//SYSIN    DD *
-  SORT FIELDS=(1,10,CH,A)
-/*
-Explanation:
-SORTIN: Input dataset containing unsorted records.
-SORTOUT: Output dataset to store sorted records.
-SORT FIELDS=(1,10,CH,A): Sort the records based on the first 10 characters (position 1, length 10), character format (CH), in ascending order (A).
+### SORT (DFSORT/SYNCSORT)
+
+SORT is a utility in JCL used to sort, merge, or copy data in sequential datasets based on specified field values. It supports various control statements to define sort keys, filtering criteria, and output formatting. SORT is widely used for organizing data, eliminating duplicates, and preparing reports or inputs for other programs. 
+
+| **Option**           | **Purpose**                                                       | **Example**                          | **Explanation** |
+|----------------------|-------------------------------------------------------------------|--------------------------------------|-----------------|
+| `SORT FIELDS=`       | Specifies the fields and order to sort the records.               | `SORT FIELDS=(1,5,CH,A)`             | Sort records starting at position 1, length 5, character type, ascending order. |
+| `MERGE FIELDS=`      | Merges multiple sorted input files into a single sorted output.   | `MERGE FIELDS=(10,2,CH,D)`           | Merge based on characters at position 10, length 2, descending. |
+| `INCLUDE COND=`      | Includes only records that match specified condition(s).          | `INCLUDE COND=(20,3,CH,EQ,C'ABC')`   | Include only records where position 20 (length 3) equals 'ABC'. |
+| `OMIT COND=`         | Excludes records that match specified condition(s).               | `OMIT COND=(5,2,ZD,GT,50)`           | Omit records where position 5 (length 2) as zoned decimal is greater than 50. |
+| `SUM FIELDS=`        | Removes duplicates and optionally sums numeric fields.            | `SUM FIELDS=(30,4,ZD)`               | Sum values at position 30 (length 4) for duplicate records. |
+| `OUTREC FIELDS=`     | Defines the format or fields for the output record.               | `OUTREC FIELDS=(1,10,21,5)`          | Output fields: position 1–10 and 21–25 from input. |
+| `INREC FIELDS=`      | Reformat input records before processing.                         | `INREC FIELDS=(1,5,10,3)`            | Use only fields 1–5 and 10–12 from input. |
+| `OPTION COPY`        | Copies records without sorting or merging.                        | `OPTION COPY`                        | Simply copies data from input to output. |
+
+
+**Example:**
+
+``` //SORTJOB  JOB (ACCT),'SORT EXAMPLE',CLASS=A,MSGCLASS=X ```
+
+``` //STEP1    EXEC PGM=SORT ```
+
+``` //SORTIN   DD DSN=INPUT.DATASET,DISP=SHR ```
+
+``` //SORTOUT  DD DSN=OUTPUT.DATASET,DISP=(NEW,CATLG,DELETE), ```
+
+``` //            SPACE=(CYL,(1,1)),UNIT=SYSDA ```
+
+``` //SYSOUT   DD SYSOUT=*  ```
+
+``` //SYSIN    DD *  ```
+
+```  SORT FIELDS=(1,10,CH,A) ```
+
+``` /* ```
+
+**Explanation:**
+
+- **SORTIN:** Input dataset containing unsorted records.
+- **SORTOUT:** Output dataset to store sorted records.
+- **SORT FIELDS=(1,10,CH,A):** Sort the records based on the first 10 characters (position 1, length 10), character format (CH), in ascending order (A).
+
+  
 ### IDCAMS
 IDCAMS (Integrated Data Set Control Access Method Services) is a utility program in JCL used primarily for managing VSAM and non-VSAM datasets. It allows you to define, delete, print, list, and reorganize datasets, especially VSAM files such as KSDS, ESDS, and RRDS. IDCAMS is commonly used in system administration and batch jobs to handle catalog-related operations and data organization.
+
 Key Operations Performed by IDCAMS:
 Operation	Purpose	Example Command
 DEFINE	Create a new VSAM dataset	DEFINE CLUSTER (...)
