@@ -882,11 +882,11 @@ IEBGENER is a utility in JCL used to copy data from one dataset to another, typi
 
 **Explanation:**
 
-- STEP1 executes IEBGENER to copy data.
-- SYSUT1 is the input dataset (SOURCE.FILE), which is opened in shared mode (DISP=SHR).
-- SYSUT2 is the output dataset (DEST.FILE), created with new space allocation (DISP=NEW).
-- SYSPRINT is the output report, which shows the utility’s status.
-- SYSIN is set to DUMMY, meaning no control statements are used for transformation.
+- **STEP1** executes IEBGENER to copy data.
+- **SYSUT1** is the input dataset (SOURCE.FILE), which is opened in shared mode (DISP=SHR).
+- **SYSUT2** is the output dataset (DEST.FILE), created with new space allocation (DISP=NEW).
+- **SYSPRINT** is the output report, which shows the utility’s status.
+- **SYSIN** is set to DUMMY, meaning no control statements are used for transformation.
 
 ### IEBCOPY
 
@@ -912,10 +912,10 @@ IEBCOPY is a JCL utility used to copy, compress, or merge members within or betw
 
 **Explanation:**
 
-- IEBCOPY copies members from SOURCE.LIB to TARGET.LIB.
-- SYSUT1 is the input partitioned dataset (PDS).
-- SYSUT2 is the output PDS, which must already exist.
-- SYSIN contains the COPY statement, specifying the input (INDD) and output (OUTDD) DD names.
+- **IEBCOPY** copies members from SOURCE.LIB to TARGET.LIB.
+- **SYSUT1** is the input partitioned dataset (PDS).
+- **SYSUT2** is the output PDS, which must already exist.
+- **SYSIN** contains the COPY statement, specifying the input (INDD) and output (OUTDD) DD names.
 
 This is a basic copy operation; IEBCOPY can also be used for selective member copy, renaming, or compression.
 
@@ -963,241 +963,367 @@ SORT is a utility in JCL used to sort, merge, or copy data in sequential dataset
 
   
 ### IDCAMS
+
 IDCAMS (Integrated Data Set Control Access Method Services) is a utility program in JCL used primarily for managing VSAM and non-VSAM datasets. It allows you to define, delete, print, list, and reorganize datasets, especially VSAM files such as KSDS, ESDS, and RRDS. IDCAMS is commonly used in system administration and batch jobs to handle catalog-related operations and data organization.
 
-Key Operations Performed by IDCAMS:
-Operation	Purpose	Example Command
-DEFINE	Create a new VSAM dataset	DEFINE CLUSTER (...)
-DELETE	Remove datasets from the catalog	DELETE MY.VSAM.CLUSTER
-REPRO	Copy records between datasets	REPRO INFILE(IN) OUTFILE(OUT)
-LISTCAT	Display catalog information about datasets	LISTCAT ENTRIES(MY.FILE)
-PRINT	Print contents of a dataset	PRINT INFILE(INPUT)
+
+**Key Operations Performed by IDCAMS:**
+
+| **Operation** | **Purpose**                             | **Example Command**             |
+|---------------|------------------------------------------|---------------------------------|
+| `DEFINE`      | Create a new VSAM dataset                | `DEFINE CLUSTER (...)`          |
+| `DELETE`      | Remove datasets from the catalog         | `DELETE MY.VSAM.CLUSTER`        |
+| `REPRO`       | Copy records between datasets            | `REPRO INFILE(IN) OUTFILE(OUT)` |
+| `LISTCAT`     | Display catalog information about datasets| `LISTCAT ENTRIES(MY.FILE)`      |
+| `PRINT`       | Print contents of a dataset              | `PRINT INFILE(INPUT)`           |
+
 
 
 
 ## VSAM in Detail
+
 ### IDCAMS 
+
 (Integrated Data Set Control Access Method Services) is a powerful utility in JCL used to manage both VSAM and non-VSAM datasets. It is most commonly used for operations such as defining, deleting, copying, printing, and listing datasets, especially VSAM files like KSDS, ESDS, and RRDS. IDCAMS uses control statements provided through the SYSIN DD statement to specify the desired dataset management operation. One of its frequently used commands is REPRO, which copies data between datasets or files. Overall, IDCAMS is essential for dataset and catalog management in mainframe environments.
+
  
 
-Feature / Attribute	KSDS (Key-Sequenced Data Set)	ESDS (Entry-Sequenced Data Set)	RRDS (Relative Record Data Set)	LSDS (Linear Data Set)
-Record Access	Sequential, Random, Dynamic	Sequential, Dynamic (via RBA)	Random (via RRN), Sequential	Not record-oriented
-Key Support	Yes (unique key)	No	No	No
-Record Identification	By key	By RBA (Relative Byte Address)	By RRN (Relative Record Number)	By byte offset
-Fixed/Variable Records	Fixed or variable-length	Fixed or variable-length	Fixed-length only	Byte stream
-Record Insertion	Inserted in key order	Appended at end	To a specific RRN	N/A (no concept of records)
-Record Deletion	Yes (space may be reused)	No physical deletion (logically ignored)	Yes	N/A
-Record Update	Yes	Yes (in-place)	Yes (fixed-length constraints)	Yes (at byte level)
-Index Component	Yes	No	Optional (for VSAM catalogs)	No
-Use Case	Indexed files (e.g., customer DB)	Logs, sequential data (e.g., audit logs)	Table-like fixed-record data	System data sets, DB2 spaces
-Support for Alternate Index	Yes	Yes (less common)	No	No
+| **Feature / Attribute**       | **KSDS (Key-Sequenced Data Set)**      | **ESDS (Entry-Sequenced Data Set)**     | **RRDS (Relative Record Data Set)**     | **LSDS (Linear Data Set)**           |
+|------------------------------|----------------------------------------|-----------------------------------------|-----------------------------------------|--------------------------------------|
+| **Record Access**            | Sequential, Random, Dynamic            | Sequential, Dynamic (via RBA)           | Random (via RRN), Sequential            | Not record-oriented                  |
+| **Key Support**              | Yes (unique key)                       | No                                      | No                                      | No                                   |
+| **Record Identification**    | By key                                 | By RBA (Relative Byte Address)          | By RRN (Relative Record Number)         | By byte offset                       |
+| **Fixed/Variable Records**   | Fixed or variable-length               | Fixed or variable-length                | Fixed-length only                       | Byte stream                          |
+| **Record Insertion**         | Inserted in key order                  | Appended at end                         | To a specific RRN                       | N/A (no concept of records)         |
+| **Record Deletion**          | Yes (space may be reused)              | No physical deletion (logically ignored)| Yes                                     | N/A                                  |
+| **Record Update**            | Yes                                    | Yes (in-place)                          | Yes (fixed-length constraints)          | Yes (at byte level)                 |
+| **Index Component**          | Yes                                    | No                                      | Optional (for VSAM catalogs)            | No                                   |
+| **Use Case**                 | Indexed files (e.g., customer DB)      | Logs, sequential data (e.g., audit logs)| Table-like fixed-record data            | System data sets, DB2 spaces        |
+| **Support for Alternate Index** | Yes                                 | Yes (less common)                       | No                                      | No                                   |
+
 
 
 ### KSDS
+
 (Key-Sequenced Data Set) is a type of VSAM dataset where each record is stored and accessed using a unique key. It maintains an index that allows both sequential and direct access based on the key value, making it ideal for applications requiring fast lookups or sorted data. Records are automatically stored in key sequence, and new records are inserted in the correct order, not just appended. KSDS supports dynamic insert, update, and delete operations, providing flexibility for frequently changing data. It is commonly used for databases, customer master files, and systems requiring high-performance indexed access
 
 To define a KSDS (Key-Sequenced Data Set) in JCL using IDCAMS (Access Method Services), you typically use the DEFINE CLUSTER command with a combination of parameters. 
 
 
 Here's a comprehensive list of the commonly used parameters for defining a KSDS:
-Syntax Structure:
-DEFINE CLUSTER (NAME(dsname)       -
-                INDEXED            -
-                RECORDSIZE(min max)-
-                KEYS(length offset)-
-                FREESPACE(CI CA)   -
-                VOLUMES(volser)    -
-                CISZ(size)         -
-                SHR(share-options) -
-                REUSE              -
-                SPEED|RECOVERY     -
-                BUFFERSPACE(size)  -
-                CONTROLINTERVALSIZE(size) -
-                FILE(ddname))      -
-        DATA (NAME(dsname.DATA)    -
-              CYL(primary secondary) -
-              CONTROLINTERVALSIZE(size) -
-              RECORDSIZE(min max) -
-              FREESPACE(CI CA)    -
-              CISZ(size)          -
-              )                -
-        INDEX (NAME(dsname.INDEX)  -
-               CYL(primary secondary) -
-               CISZ(size)         -
-               )               
+
+**Syntax Structure:**
+
+``` DEFINE CLUSTER (NAME(dsname)       - ```
+
+```                 INDEXED            - ```
+
+```                RECORDSIZE(min max)- ```
+
+```                KEYS(length offset)- ```
+
+```                 FREESPACE(CI CA)   - ```
+
+```                VOLUMES(volser)    - ```
+
+```                CISZ(size)         - ```
+
+```                SHR(share-options) - ```
+
+```                REUSE              - ```
+
+```                SPEED|RECOVERY     - ```
+
+```                BUFFERSPACE(size)  - ```
+
+```                CONTROLINTERVALSIZE(size) - ```
+
+```                FILE(ddname))      - ```
+
+```         DATA (NAME(dsname.DATA)    - ```
+
+```              CYL(primary secondary) - ```
+
+```              CONTROLINTERVALSIZE(size) - ```
+
+```              RECORDSIZE(min max) - ```
+
+```              FREESPACE(CI CA)    - ```
+
+```              CISZ(size)          - ```
+
+```              )                - ```
+
+```        INDEX (NAME(dsname.INDEX)  - ```
+
+```               CYL(primary secondary) - ```
+
+```               CISZ(size)         - ```
+
+```	       )     ```           
  
-Explanation of Key Parameters:
-Cluster Level Parameters
-Parameter	Description
-NAME	Full VSAM cluster name (required).
-INDEXED	Specifies it's a KSDS (indexed).
-RECORDSIZE(min max)	Specifies min and max record lengths.
-KEYS(length offset)	Defines the key field's length and offset (required for KSDS).
-FREESPACE(CI CA)	Reserves space for inserting records; CI = Control Interval, CA = Control Area.
-VOLUMES(volser)	Specifies volume serial number(s).
-CISZ(size) or CONTROLINTERVALSIZE(size)	Sets size of control interval (defaults to 4KB if omitted).
-SHR(1 3)	Share options; e.g., SHR(1 3) for read-sharing.
-REUSE	Allows reuse of cluster after deletion without redefining.
-SPEED or RECOVERY	SPEED skips access method services recovery logging for faster allocation.
-BUFFERSPACE(size)	Allocates memory buffer for VSAM control intervals.
+**Explanation of Key Parameters:**
+
+
+**Cluster Level Parameters**
+
+| **Parameter**                          | **Description**                                                                 |
+|---------------------------------------|---------------------------------------------------------------------------------|
+| `NAME`                                | Full VSAM cluster name (required).                                             |
+| `INDEXED`                             | Specifies it's a KSDS (key-sequenced dataset).                                 |
+| `RECORDSIZE(min max)`                 | Specifies minimum and maximum record lengths.                                  |
+| `KEYS(length offset)`                 | Defines the key field’s length and offset (required for KSDS).                 |
+| `FREESPACE(CI CA)`                    | Reserves space for insertions; CI = Control Interval, CA = Control Area.       |
+| `VOLUMES(volser)`                     | Specifies volume serial number(s).                                             |
+| `CISZ(size)` or `CONTROLINTERVALSIZE(size)` | Sets control interval size (defaults to 4KB if omitted).                |
+| `SHR(1 3)`                             | Share options (e.g., `SHR(1 3)` for read-sharing).                             |
+| `REUSE`                               | Allows cluster to be reused after deletion without redefining.                 |
+| `SPEED` or `RECOVERY`                 | `SPEED` skips AMS recovery logging for faster allocation.                      |
+| `BUFFERSPACE(size)`                   | Allocates memory buffer for VSAM control intervals.                            |
+
+
+
 
  
-DATA Component Parameters
-Parameter	Description
-NAME(dsname.DATA)	Name of data component.
-CYL(primary secondary)	Specifies primary and secondary space allocation in cylinders.
-FREESPACE(CI CA)	Optional override of cluster-level FREESPACE.
-RECORDSIZE(min max)	Optional override of cluster-level RECORDSIZE.
-CISZ(size)	Optional override of CI size for data component.
+**DATA Component Parameters**
 
-INDEX Component Parameters
-Parameter	Description
-NAME(dsname.INDEX)	Name of index component.
-CYL(primary secondary)	Space allocation for the index.
-CISZ(size)	CI size for the index component.
+| **Parameter**                      | **Description**                                                                   |
+|-----------------------------------|-----------------------------------------------------------------------------------|
+| `NAME(dsname.DATA)`               | Name of the data component.                                                      |
+| `CYL(primary secondary)`          | Specifies primary and secondary space allocation in cylinders.                   |
+| `FREESPACE(CI CA)`                | Optional override of cluster-level `FREESPACE`.                                  |
+| `RECORDSIZE(min max)`            | Optional override of cluster-level `RECORDSIZE`.                                 |
+| `CISZ(size)`                      | Optional override of control interval (CI) size for the data component.          |
 
 
-Example Definition of KSDS:
-//DEFKSDS  EXEC PGM=IDCAMS
-//SYSPRINT DD SYSOUT=*
-//SYSIN    DD *
-DEFINE CLUSTER (NAME(MY.KSDS.FILE) -
-                INDEXED -
-                RECORDSIZE(80 80) -
-                KEYS(10 0) -
-                FREESPACE(20 10) -
-                VOLUMES(VSER01) -
-                SHR(1 3)) -
-        DATA (NAME(MY.KSDS.FILE.DATA) -
-              CYLINDERS(5 2)) -
-        INDEX (NAME(MY.KSDS.FILE.INDEX) -
-               CYLINDERS(1 1))
-/*
+**INDEX Component Parameters**
+| **Parameter**              | **Description**                                      |
+|---------------------------|------------------------------------------------------|
+| `NAME(dsname.INDEX)`      | Name of index component.                             |
+| `CYL(primary secondary)`  | Space allocation for the index.                      |
+| `CISZ(size)`              | Control interval (CI) size for the index component.  |
+
+
+**Example Definition of KSDS:**
+
+``` //DEFKSDS  EXEC PGM=IDCAMS ```
+
+``` //SYSPRINT DD SYSOUT=* ```
+
+``` //SYSIN    DD * ```
+
+``` DEFINE CLUSTER (NAME(MY.KSDS.FILE) - ```
+
+```                INDEXED - ```
+
+```                RECORDSIZE(80 80) - ```
+
+```                KEYS(10 0) - ```
+
+```                FREESPACE(20 10) - ```
+
+```                VOLUMES(VSER01) - ```
+
+```                SHR(1 3)) - ```
+
+```        DATA (NAME(MY.KSDS.FILE.DATA) - ```
+
+```              CYLINDERS(5 2)) - ```
+
+```        INDEX (NAME(MY.KSDS.FILE.INDEX) - ```
+
+```               CYLINDERS(1 1)) ```
+
+``` /* ```
 
 
 ### ESDS: 
+
 An Entry-Sequenced Data Set (ESDS) stores records in the exact order they are written, with each record assigned a unique Relative Byte Address (RBA). It does not support keys, so records cannot be retrieved directly by a key—access is typically sequential or by RBA. New records are always appended at the end; deleted records are not physically removed, leading to potential space inefficiency. ESDS supports both fixed and variable-length records, and is useful for logs, audit trails, or write-once-read-many use cases. Access to specific records via RBA must be managed externally by the application.
  
-Basic Syntax:
-DEFINE CLUSTER (NAME(dsname)       -
-                NONINDEXED         -
-                RECORDSIZE(min max)-
-                VOLUMES(volser)    -
-                SHR(share-options) -
-                REUSE              -
-                SPEED|RECOVERY     -
-                BUFFERSPACE(size)) -
-        DATA (NAME(dsname.DATA)    -
-              CYL(primary secondary) -
-              CONTROLINTERVALSIZE(size) -
-              FREESPACE(CI CA))    
+**Basic Syntax:**
 
-Cluster-Level Parameters (DEFINE CLUSTER)
-Parameter	Description
-NAME(dsname)	Fully qualified name of the ESDS cluster.
-NONINDEXED	Mandatory for ESDS to indicate no index is used.
-RECORDSIZE(min max)	Specifies minimum and maximum lengths of records.
-VOLUMES(volser)	Specifies the volume serial number(s) where data set is allocated.
-SHR(1 3)	Share options (e.g., SHR(1 3) = read/write sharing).
-REUSE	Allows reuse of the cluster after deletion, without redefining.
-SPEED / RECOVERY	SPEED for faster allocation (skips logging), RECOVERY for full logging.
-BUFFERSPACE(size)	Buffer memory for VSAM (optional tuning parameter).
+``` DEFINE CLUSTER (NAME(dsname)       -  ```
+
+```                NONINDEXED         - ```
+
+```                RECORDSIZE(min max)- ```
+
+```                VOLUMES(volser)    - ```
+
+```                SHR(share-options) - ```
+
+```                REUSE              - ```
+
+```                SPEED|RECOVERY     - ```
+
+```                BUFFERSPACE(size)) -  ```
+
+```        DATA (NAME(dsname.DATA)    - ```
+
+```              CYL(primary secondary) - ```
+
+```              CONTROLINTERVALSIZE(size) - ```
+
+```              FREESPACE(CI CA))     ```
 
 
- DATA Component Parameters (DATA Section)
-Parameter	Description
-NAME(dsname.DATA)	Name of the data component (optional if same as cluster name).
-CYL(primary secondary)	Space allocation in cylinders (or use TRK for tracks).
-CONTROLINTERVALSIZE(size) or CISZ(size)	Size of each control interval (defaults to 4KB).
-FREESPACE(CI CA)	Reserves space in each CI and CA (less relevant for ESDS, optional).
+**Cluster-Level Parameters (DEFINE CLUSTER)**
+
+| **Parameter**         | **Description**                                                                 |
+|----------------------|----------------------------------------------------------------------------------|
+| `NAME(dsname)`        | Fully qualified name of the ESDS cluster.                                       |
+| `NONINDEXED`          | Mandatory for ESDS to indicate no index is used.                                |
+| `RECORDSIZE(min max)` | Specifies minimum and maximum lengths of records.                               |
+| `VOLUMES(volser)`     | Specifies the volume serial number(s) where data set is allocated.              |
+| `SHR(1 3)`            | Share options (e.g., `SHR(1 3)` = read/write sharing).                          |
+| `REUSE`               | Allows reuse of the cluster after deletion, without redefining.                 |
+| `SPEED / RECOVERY`    | `SPEED` for faster allocation (skips logging), `RECOVERY` for full logging.     |
+| `BUFFERSPACE(size)`   | Buffer memory for VSAM (optional tuning parameter).                             |
+
+
+**DATA Component Parameters (DATA Section)**
+| **Parameter**                          | **Description**                                                                 |
+|---------------------------------------|----------------------------------------------------------------------------------|
+| `NAME(dsname.DATA)`                   | Name of the data component (optional if same as cluster name).                   |
+| `CYL(primary secondary)`              | Space allocation in cylinders (or use `TRK` for tracks).                         |
+| `CONTROLINTERVALSIZE(size)` / `CISZ(size)` | Size of each control interval (defaults to 4KB).                           |
+| `FREESPACE(CI CA)`                    | Reserves space in each CI and CA (less relevant for ESDS, optional).            |
 
 
  
-Example JCL to Define an ESDS
-//DEFESDS  EXEC PGM=IDCAMS
-//SYSPRINT DD SYSOUT=*
-//SYSIN    DD *
-DEFINE CLUSTER (NAME(MY.ESDS.FILE) -
-                NONINDEXED -
-                RECORDSIZE(100 200) -
-                VOLUMES(VSER01) -
-                SHR(1 3)) -
-        DATA (NAME(MY.ESDS.FILE.DATA) -
-              CYLINDERS(5 2) -
-              CONTROLINTERVALSIZE(4096))
-/*
- Notes:
-•	No KEYS or INDEX section is used (unlike KSDS).
-•	ESDS supports both fixed and variable-length records.
-•	You can access records via RBA, but you must manage the RBAs yourself.
+**Example JCL to Define an ESDS**
+
+``` //DEFESDS  EXEC PGM=IDCAMS ```
+
+``` //SYSPRINT DD SYSOUT=* ```
+
+``` //SYSIN    DD * ```
+
+``` DEFINE CLUSTER (NAME(MY.ESDS.FILE) - ```
+
+```                NONINDEXED - ```
+
+```                RECORDSIZE(100 200) - ```
+
+```                VOLUMES(VSER01) - ```
+
+```                SHR(1 3)) - ```
+
+```        DATA (NAME(MY.ESDS.FILE.DATA) - ```
+
+```              CYLINDERS(5 2) - ```
+
+```              CONTROLINTERVALSIZE(4096)) ```
+
+``` /* ```
+
+ **Notes:**
+- > *No KEYS or INDEX section is used (unlike KSDS).*
+- > *ESDS supports both fixed and variable-length records.*
+- > *You can access records via RBA, but you must manage the RBAs yourself.*
+
+  
 ### RRDS:
 Relative Record Data Set (RRDS) stores records at fixed positions based on a Relative Record Number (RRN), starting from 1. Each record is of fixed length, and there is no concept of keys or indexing. Records can be accessed randomly by RRN or sequentially, making it suitable for applications like tables or slots. New records must be written to specific RRNs; they are not automatically appended like in ESDS. RRDS is efficient when record positions are known or predefined, but lacks flexibility for variable-length data or dynamic insertion.
+
 Here’s a JCL example to define an RRDS using IDCAMS, along with an explanation of the parameters:
-RRDS Definition JCL:
-//DEFRRDS EXEC PGM=IDCAMS
-//SYSPRINT DD SYSOUT=*
-//SYSIN    DD *
-DEFINE CLUSTER (NAME(MY.RRDS.FILE) -
-                NUMBERED            -
-                RECORDSIZE(100 100) -
-                VOLUMES(VSER01)     -
-                SHR(1 3))           -
-        DATA (NAME(MY.RRDS.FILE.DATA) -
-              CYLINDERS(5 2) -
-              CONTROLINTERVALSIZE(4096))
-/*
 
-Explanation of Key Parameters:
-Parameter	Description
-NAME(MY.RRDS.FILE)	Name of the RRDS cluster.
-NUMBERED	Indicates it's an RRDS (mandatory).
-RECORDSIZE(100 100)	Specifies fixed-length records (min = max).
-VOLUMES(VSER01)	Volume serial where the dataset is allocated.
-SHR(1 3)	Share options (e.g., allow read/write sharing).
-DATA(...)	Defines the data component (name, space, etc.).
-CYLINDERS(5 2)	Primary and secondary allocation in cylinders.
-CONTROLINTERVALSIZE(4096)	Size of control interval (default is 4096 if not specified).
+**RRDS Definition JCL:**
+
+``` //DEFRRDS EXEC PGM=IDCAMS ```
+
+``` //SYSPRINT DD SYSOUT=* ```
+
+``` //SYSIN    DD * ```
+
+``` DEFINE CLUSTER (NAME(MY.RRDS.FILE) - ```
+
+```                NUMBERED            - ```
+
+```                RECORDSIZE(100 100) - ```
+
+```                VOLUMES(VSER01)     - ```
+
+```                SHR(1 3))           - ```
+
+```        DATA (NAME(MY.RRDS.FILE.DATA) - ```
+
+```              CYLINDERS(5 2) - ```
+
+```              CONTROLINTERVALSIZE(4096)) ```
+
+``` /* ```
 
 
-Key Notes:
-•	RRDS does not have an index.
-•	You must manage RRNs in your application.
-•	No key-based access is available (unlike KSDS).
-•	You can write, read, update, or delete records by RRN.
+**Explanation of Key Parameters:**
+
+| **Parameter**                 | **Description**                                                                |
+|------------------------------|----------------------------------------------------------------------------------|
+| `NAME(MY.RRDS.FILE)`         | Name of the RRDS cluster.                                                       |
+| `NUMBERED`                   | Indicates it's an RRDS (mandatory).                                             |
+| `RECORDSIZE(100 100)`        | Specifies fixed-length records (min = max).                                     |
+| `VOLUMES(VSER01)`            | Volume serial where the dataset is allocated.                                   |
+| `SHR(1 3)`                   | Share options (e.g., allow read/write sharing).                                 |
+| `DATA(...)`                  | Defines the data component (name, space, etc.).                                 |
+| `CYLINDERS(5 2)`             | Primary and secondary allocation in cylinders.                                  |
+| `CONTROLINTERVALSIZE(4096)` | Size of control interval (default is 4096 if not specified).                    |
+
+
+
+**Key Notes:**
+- > *RRDS does not have an index.*
+- > *You must manage RRNs in your application.*
+- > *No key-based access is available (unlike KSDS).*
+- > *You can write, read, update, or delete records by RRN.*
 
 ### LSDS
 A Linear Sequential Data Set (LSDS) is a type of VSAM data set that stores data as a continuous stream of bytes, without any inherent record boundaries. It is primarily used as a memory-mapped file and is accessed by byte offsets, not by records or keys. LSDS is often used by CICS for storing system data like temporary storage queues or control blocks. It provides no support for record-level operations—you must manage structure and segmentation in your application. Because of its flexibility and low-level control, LSDS is suitable for advanced, system-level use cases rather than general data storage.
+
 Here’s a JCL example to define an LSDS (Linear Sequential Data Set) using IDCAMS, along with an explanation of the key parameters:
 
-LSDS Definition JCL Example:
-//DEFLSDS EXEC PGM=IDCAMS
-//SYSPRINT DD SYSOUT=*
-//SYSIN    DD *
-DEFINE CLUSTER (NAME(MY.LSDS.FILE) -
-                LINEAR             -
-                VOLUMES(VSER01)    -
-                SHR(1 3))          -
-        DATA (NAME(MY.LSDS.FILE.DATA) -
-              CYLINDERS(5 2))
-/*
+**LSDS Definition JCL Example:**
+
+``` //DEFLSDS EXEC PGM=IDCAMS ```
+
+``` //SYSPRINT DD SYSOUT=* ```
+
+``` //SYSIN    DD * ```
+
+``` DEFINE CLUSTER (NAME(MY.LSDS.FILE) - ```
+
+```                LINEAR             - ```
+
+```                VOLUMES(VSER01)    - ```
+
+```                SHR(1 3))          - ```
+
+```        DATA (NAME(MY.LSDS.FILE.DATA) - ```
+
+```              CYLINDERS(5 2)) ```
+
+``` /* ```
 
 
 
+**Explanation of Key Parameters:**
 
-Explanation of Key Parameters:
-Parameter	Description
-NAME(MY.LSDS.FILE)	Name of the LSDS cluster.
-LINEAR	Indicates that the data set is linear (mandatory for LSDS).
-VOLUMES(VSER01)	Volume serial number where the data set will reside.
-SHR(1 3)	Share options for read/write.
-DATA(...)	Defines the data component, including space allocation.
-CYLINDERS(5 2)	Primary and secondary allocation in cylinders.
+| **Parameter**           | **Description**                                                         |
+|------------------------|-------------------------------------------------------------------------|
+| `NAME(MY.LSDS.FILE)`   | Name of the LSDS cluster.                                               |
+| `LINEAR`               | Indicates that the data set is linear (mandatory for LSDS).             |
+| `VOLUMES(VSER01)`      | Volume serial number where the data set will reside.                    |
+| `SHR(1 3)`             | Share options for read/write.                                           |
+| `DATA(...)`            | Defines the data component, including space allocation.                 |
+| `CYLINDERS(5 2)`       | Primary and secondary allocation in cylinders.                          |
+
+
  
- Key Notes:
-•	LSDS does not use RECORDSIZE, KEYS, INDEX, or CONTROLINTERVALSIZE.
-•	It’s accessed as a continuous byte stream, often by CICS.
-•	Applications must define and interpret the internal structure themselves.
-•	You can't perform standard record-level VSAM operations on an LSDS.
+ **Key Notes:**
+- > *LSDS does not use RECORDSIZE, KEYS, INDEX, or CONTROLINTERVALSIZE.*
+- > *It’s accessed as a continuous byte stream, often by CICS.*
+- > *Applications must define and interpret the internal structure themselves.*
+- > *You can't perform standard record-level VSAM operations on an LSDS.*
 
 ## Error Handling and Debugging
 JCL Errors
