@@ -776,6 +776,7 @@ These datasets save resources by ensuring temporary data doesn’t remain in the
 
 
 ## Procedures and Symbolic Parameters
+
 In JCL (Job Control Language), a PROC (Procedure) is a reusable set of JCL statements defined to simplify job maintenance and promote standardization. A PROC can be defined in-stream (within the same JCL) using //PROCNAME PROC or stored as a cataloged procedure in a procedure library (PROCLIB). The PROC contains one or more steps, each typically invoking a program, and can accept parameters passed from the job using EXEC PROCNAME with symbolic substitution (e.g., &DSN). It helps eliminate redundancy when multiple jobs share common processing logic, such as backup, sort, or load routines. You can override individual step parameters from the calling JCL using parameter overrides or JCL overrides. Procedures are invoked using the EXEC statement and can be nested, though best practices discourage deep nesting. Using PROCs enhances job modularity, makes changes easier to implement, and supports enterprise-level JCL standardization.
 
 - Cataloged Procedure
@@ -1012,6 +1013,7 @@ To define a KSDS (Key-Sequenced Data Set) in JCL using IDCAMS (Access Method Ser
 
 Here's a comprehensive list of the commonly used parameters for defining a KSDS:
 
+
 **Syntax Structure:**
 
 ``` DEFINE CLUSTER (NAME(dsname)       - ```
@@ -1065,6 +1067,8 @@ Here's a comprehensive list of the commonly used parameters for defining a KSDS:
 **Explanation of Key Parameters:**
 
 
+
+
 **Cluster Level Parameters**
 
 | **Parameter**                          | **Description**                                                                 |
@@ -1096,12 +1100,15 @@ Here's a comprehensive list of the commonly used parameters for defining a KSDS:
 | `CISZ(size)`                      | Optional override of control interval (CI) size for the data component.          |
 
 
+
 **INDEX Component Parameters**
 | **Parameter**              | **Description**                                      |
 |---------------------------|------------------------------------------------------|
 | `NAME(dsname.INDEX)`      | Name of index component.                             |
 | `CYL(primary secondary)`  | Space allocation for the index.                      |
 | `CISZ(size)`              | Control interval (CI) size for the index component.  |
+
+
 
 
 **Example Definition of KSDS:**
@@ -1141,6 +1148,8 @@ Here's a comprehensive list of the commonly used parameters for defining a KSDS:
 
 An Entry-Sequenced Data Set (ESDS) stores records in the exact order they are written, with each record assigned a unique Relative Byte Address (RBA). It does not support keys, so records cannot be retrieved directly by a key—access is typically sequential or by RBA. New records are always appended at the end; deleted records are not physically removed, leading to potential space inefficiency. ESDS supports both fixed and variable-length records, and is useful for logs, audit trails, or write-once-read-many use cases. Access to specific records via RBA must be managed externally by the application.
  
+
+
 **Basic Syntax:**
 
 ``` DEFINE CLUSTER (NAME(dsname)       -  ```
@@ -1168,6 +1177,8 @@ An Entry-Sequenced Data Set (ESDS) stores records in the exact order they are wr
 ```              FREESPACE(CI CA))     ```
 
 
+
+
 **Cluster-Level Parameters (DEFINE CLUSTER)**
 
 | **Parameter**         | **Description**                                                                 |
@@ -1180,6 +1191,8 @@ An Entry-Sequenced Data Set (ESDS) stores records in the exact order they are wr
 | `REUSE`               | Allows reuse of the cluster after deletion, without redefining.                 |
 | `SPEED / RECOVERY`    | `SPEED` for faster allocation (skips logging), `RECOVERY` for full logging.     |
 | `BUFFERSPACE(size)`   | Buffer memory for VSAM (optional tuning parameter).                             |
+
+
 
 
 **DATA Component Parameters (DATA Section)**
@@ -1218,6 +1231,8 @@ An Entry-Sequenced Data Set (ESDS) stores records in the exact order they are wr
 
 ``` /* ```
 
+
+ 
  **Notes:**
 - > *No KEYS or INDEX section is used (unlike KSDS).*
 - > *ESDS supports both fixed and variable-length records.*
@@ -1225,9 +1240,12 @@ An Entry-Sequenced Data Set (ESDS) stores records in the exact order they are wr
 
   
 ### RRDS:
+
 Relative Record Data Set (RRDS) stores records at fixed positions based on a Relative Record Number (RRN), starting from 1. Each record is of fixed length, and there is no concept of keys or indexing. Records can be accessed randomly by RRN or sequentially, making it suitable for applications like tables or slots. New records must be written to specific RRNs; they are not automatically appended like in ESDS. RRDS is efficient when record positions are known or predefined, but lacks flexibility for variable-length data or dynamic insertion.
 
 Here’s a JCL example to define an RRDS using IDCAMS, along with an explanation of the parameters:
+
+
 
 **RRDS Definition JCL:**
 
@@ -1256,6 +1274,8 @@ Here’s a JCL example to define an RRDS using IDCAMS, along with an explanation
 ``` /* ```
 
 
+
+
 **Explanation of Key Parameters:**
 
 | **Parameter**                 | **Description**                                                                |
@@ -1277,10 +1297,13 @@ Here’s a JCL example to define an RRDS using IDCAMS, along with an explanation
 - > *No key-based access is available (unlike KSDS).*
 - > *You can write, read, update, or delete records by RRN.*
 
+
+
 ### LSDS
 A Linear Sequential Data Set (LSDS) is a type of VSAM data set that stores data as a continuous stream of bytes, without any inherent record boundaries. It is primarily used as a memory-mapped file and is accessed by byte offsets, not by records or keys. LSDS is often used by CICS for storing system data like temporary storage queues or control blocks. It provides no support for record-level operations—you must manage structure and segmentation in your application. Because of its flexibility and low-level control, LSDS is suitable for advanced, system-level use cases rather than general data storage.
 
 Here’s a JCL example to define an LSDS (Linear Sequential Data Set) using IDCAMS, along with an explanation of the key parameters:
+
 
 **LSDS Definition JCL Example:**
 
@@ -1306,6 +1329,7 @@ Here’s a JCL example to define an LSDS (Linear Sequential Data Set) using IDCA
 
 
 
+
 **Explanation of Key Parameters:**
 
 | **Parameter**           | **Description**                                                         |
@@ -1325,127 +1349,202 @@ Here’s a JCL example to define an LSDS (Linear Sequential Data Set) using IDCA
 - > *Applications must define and interpret the internal structure themselves.*
 - > *You can't perform standard record-level VSAM operations on an LSDS.*
 
-## Error Handling and Debugging
-JCL Errors
-These errors occur due to syntax issues or structural problems in your JCL code. The system doesn't execute the job if these are found.
-Examples:
-•	Misspelled keywords (e.g., EXCEC instead of EXEC)
-•	Improper continuation of statements
-•	Invalid parameters
-•	Dataset not defined but used.
-Resolution:
-•	Carefully review the syntax
-•	Use ISPF editor syntax checking or compile tools
-•	Refer to the JESYSMSG for error descriptions
-ABENDs (Abnormal Ends)
-These happen during execution due to logic or resource issues.
-Types:
-•	System ABENDs (S**):** Operating system-related (e.g., S806 for program not found)
-•	User ABENDs (U**):** Custom or application-generated errors (e.g., U4038)
-Diagnosis:
-•	Check JESMSGLG, JESJCL, and SYSOUT datasets
-•	Look into the dump provided for system ABENDs
-•	Analyze codes with IBM documentation or manuals
- Return Codes (RC)
-Every step in a job returns a code indicating success or failure.
-•	RC = 0: Successful execution
-•	RC = 4: Warning (non-critical)
-•	RC = 8 or more: Error (critical)
-Usage:
-•	Conditional execution using COND or IF/THEN/ELSE JCL statements
-•	For example:
-jcl
-CopyEdit
-//STEP2 EXEC PGM=XYZ,COND=(4,LT)
-This skips STEP2 if the previous step had a return code less than 4.
-Debugging Tools
-These help trace and identify logic errors in programs invoked by JCL.
-•	IBM Debug Tool: Used for interactive debugging of COBOL, PL/I, and C programs
-•	Expeditor (IBM Product): Offers breakpoints, watch variables, step-through capabilities
-•	SYSOUT: Captures program output/logs for analysis
-•	SYSABEND/SYSUDUMP/SYSPRINT: Datasets that collect dumps and trace messages for debugging
-Techniques for Handling Errors
-a. Conditional Execution:
-Skip or run steps based on previous return codes:
-//STEP3 EXEC PGM=ABC,COND=(8,EQ,STEP2)
- IF/THEN/ELSE:
-More readable and logical control:
-// IF (STEP2.RC = 8) THEN
-//   EXEC PGM=ERRORPROC
-// ENDIF
-c. Setting NOTIFY:
-To notify the TSO user on completion or failure:
-j
-// JOB1 JOB (ACCT),'NAME',NOTIFY=&SYSUID
 
-Job Logs Analysis
+## Error Handling and Debugging
+**JCL Errors**
+
+These errors occur due to syntax issues or structural problems in your JCL code. The system doesn't execute the job if these are found.
+
+**Examples:**
+
+- Misspelled keywords (e.g., EXCEC instead of EXEC)
+- Improper continuation of statements
+- Invalid parameters
+- Dataset not defined but used.
+  
+**Resolution:**
+
+- Carefully review the syntax
+- Use ISPF editor syntax checking or compile tools
+- Refer to the JESYSMSG for error descriptions
+  
+**ABENDs (Abnormal Ends)**
+
+These happen during execution due to logic or resource issues.
+
+**Types:**
+
+- System ABENDs (S**):** Operating system-related (e.g., S806 for program not found)
+- User ABENDs (U**):** Custom or application-generated errors (e.g., U4038)
+  
+**Diagnosis:**
+
+- Check JESMSGLG, JESJCL, and SYSOUT datasets
+- Look into the dump provided for system ABENDs
+- Analyze codes with IBM documentation or manuals
+
+
+**Return Codes (RC)**
+
+Every step in a job returns a code indicating success or failure.
+
+- RC = 0: Successful execution
+- RC = 4: Warning (non-critical)
+- RC = 8 or more: Error (critical)
+
+  
+**Usage:**
+
+- Conditional execution using COND or IF/THEN/ELSE JCL statements
+
+
+**For example:**
+
+``` //STEP2 EXEC PGM=XYZ,COND=(4,LT) ```
+
+This skips STEP2 if the previous step had a return code less than 4.
+
+### Debugging Tools
+
+These help trace and identify logic errors in programs invoked by JCL.
+- IBM Debug Tool: Used for interactive debugging of COBOL, PL/I, and C programs
+- Expeditor (IBM Product): Offers breakpoints, watch variables, step-through capabilities
+- SYSOUT: Captures program output/logs for analysis
+- SYSABEND/SYSUDUMP/SYSPRINT: Datasets that collect dumps and trace messages for debugging
+
+**Techniques for Handling Errors**
+
+- Conditional Execution:
+  Skip or run steps based on previous return codes:
+
+``` //STEP3 EXEC PGM=ABC,COND=(8,EQ,STEP2) ```
+
+``` IF/THEN/ELSE: ```
+
+ 
+- More readable and logical control:
+  
+``` // IF (STEP2.RC = 8) THEN ```
+
+``` //   EXEC PGM=ERRORPROC ```
+
+``` // ENDIF ```
+
+- Setting NOTIFY:
+To notify the TSO user on completion or failure:
+
+``` // JOB1 JOB (ACCT),'NAME',NOTIFY=&SYSUID ```
+
+**Job Logs Analysis**
+
 When a job fails, check these outputs:
-•	JESMSGLG: Job-level messages from JES
-•	JESJCL: Echo of submitted JCL and any interpretation by JES
-•	JESYSMSG: System messages during step execution
-•	SYSPRINT, SYSOUT: Application-specific logs or print data
+
+- JESMSGLG: Job-level messages from JES
+- JESJCL: Echo of submitted JCL and any interpretation by JES
+- JESYSMSG: System messages during step execution
+- SYSPRINT, SYSOUT: Application-specific logs or print data
+
 
 ## Real-world Scenarios
  Batch Processing of Financial Transactions
-Use Case:
+ 
+**Use Case:**
+
 Banks and financial institutions process large volumes of transactions such as account updates, loan interest calculations, and end-of-day reconciliations.
-How JCL Helps:
-•	Automates execution of COBOL programs that handle files (e.g., VSAM, flat files)
-•	Executes jobs during off-peak hours (overnight)
-•	Ensures secure, consistent transaction handling
-Example:
-//BATCHJOB JOB (FIN),'DAILY TXNS'
-//STEP1 EXEC PGM=CALCINTEREST
-//INPUT DD DSN=BANK.TXN.FILE,DISP=SHR
 
+**How JCL Helps?**
 
+- Automates execution of COBOL programs that handle files (e.g., VSAM, flat files)
+- Executes jobs during off-peak hours (overnight)
+- Ensures secure, consistent transaction handling
 
- Generating Reports
-Use Case:
+**Example:**
+
+``` //BATCHJOB JOB (FIN),'DAILY TXNS'  ```
+
+``` //STEP1 EXEC PGM=CALCINTEREST ```
+
+``` //INPUT DD DSN=BANK.TXN.FILE,DISP=SHR ```
+
+### Generating Reports
+
+**Use Case:**
+
 Organizations generate daily, weekly, or monthly reports from data warehouses or production files (e.g., sales reports, inventory).
-How JCL Helps:
-•	Executes report-generating programs (COBOL/PLI)
-•	Redirects output to printers or files (e.g., SYSOUT, SYSIN)
-•	Schedules jobs via job schedulers (e.g., CA-7)
 
-Data Backup and Restoration
-Use Case:
+***How JCL Helps?***
+
+- Executes report-generating programs (COBOL/PLI)
+- Redirects output to printers or files (e.g., SYSOUT, SYSIN)
+- Schedules jobs via job schedulers (e.g., CA-7, Control-M)
+
+### Data Backup and Restoration
+
+**Use Case:**
+
 Regularly backing up critical datasets to tape or disk storage to ensure data recovery.
-How JCL Helps:
-•	Uses utilities like IEBGENER, DFSMSdss, or IDCAMS to copy/restore datasets
-•	Sets up automated routines with minimal human intervention
-Example:
-//STEP1 EXEC PGM=IEBGENER
-//SYSUT1 DD DSN=PROD.DATA,DISP=SHR
-//SYSUT2 DD DSN=BACKUP.DATA,DISP=(NEW,CATLG)
 
-Application Deployment
-Use Case:
+**How JCL Helps?**
+
+- Uses utilities like IEBGENER, DFSMSdss, or IDCAMS to copy/restore datasets
+- Sets up automated routines with minimal human intervention
+  
+**Example:**
+
+``` //STEP1 EXEC PGM=IEBGENER ```
+
+``` //SYSUT1 DD DSN=PROD.DATA,DISP=SHR ```
+
+```` //SYSUT2 DD DSN=BACKUP.DATA,DISP=(NEW,CATLG) ```
+
+
+### Application Deployment
+
+**Use Case:**
+
 Deploying compiled COBOL or PL/I applications to the production environment.
-How JCL Helps:
-•	Transfers load modules to production libraries
-•	Runs install jobs to allocate datasets or update DB2 tables
 
-Sorting and Merging Files
-Use Case:
+**How JCL Helps?**
+
+- Transfers load modules to production libraries
+- Runs install jobs to allocate datasets or update DB2 tables
+
+### Sorting and Merging Files
+
+**Use Case:**
 Merging multiple datasets (e.g., customer files), sorting sales records by date or region.
-How JCL Helps:
-•	Runs utility programs like DFSORT or SYNCSORT
-•	Allows complex sorting and filtering through control cards
-Example:
-//STEP1 EXEC PGM=SORT
-//SYSIN DD *
-  SORT FIELDS=(1,5,CH,A)
-/*
-//SORTIN DD DSN=INPUT.FILE1
-//SORTOUT DD DSN=OUTPUT.FILE
 
- Database Jobs (DB2, IMS)
-Use Case:
+**How JCL Helps?**
+
+- Runs utility programs like DFSORT or SYNCSORT
+- Allows complex sorting and filtering through control cards
+
+**Example:**
+
+``` //STEP1 EXEC PGM=SORT ```
+
+``` //SYSIN DD * ```
+
+```  SORT FIELDS=(1,5,CH,A) ```
+
+``` /* ```
+
+``` //SORTIN DD DSN=INPUT.FILE1 ```
+
+```` //SORTOUT DD DSN=OUTPUT.FILE ```
+
+
+### Database Jobs (DB2, IMS)
+
+**Use Case:**
 Running queries, updating tables, or loading data into DB2/IMS databases.
-How JCL Helps:
-•	Interfaces with DB2 using DSN command processors
-•	Runs SQL jobs embedded in COBOL via precompilation
+
+**How JCL Helps?**
+
+- Interfaces with DB2 using DSN command processors
+- Runs SQL jobs embedded in COBOL via precompilation
+
+
 
 ## Best Practices
  Use Meaningful Job and Step Names
