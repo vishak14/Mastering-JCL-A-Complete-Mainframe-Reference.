@@ -744,7 +744,8 @@ DCB (Data Control Block) in JCL defines the attributes of a dataset, such as its
 **Formula to calculate BLKSIZE**
 
 ``` BLKSIZE=LRECL×Number of Records per Block\text{BLKSIZE} = \text{LRECL} \times \text{Number of Records per Block}BLKSIZE=LRECL×Number of Records per Block ``` 
-Where:
+
+**Where:**
 LRECL is the logical record length (the size of each record in bytes).
 Number of Records per Block is the number of records that will be placed in a single block.
 For example, if LRECL is 80 bytes and you want to store 100 records per block:
