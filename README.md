@@ -832,6 +832,7 @@ Used for more readable conditional logic.
 ## JCL Utilities
 
 ### IEFBR14
+
 IEFBR14 is a utility program in JCL that is commonly used for tasks like creating or deleting datasets without performing any actual processing. It is a dummy program that runs successfully with a return code of 0, making it ideal for allocating or deallocating datasets in a job step. Typically, it is used in scenarios where you need to allocate or delete datasets without performing any meaningful operation on the data itself.
 
 **Example:**
@@ -862,17 +863,26 @@ In this case, IEFBR14 will successfully create MY.DATASET without actually perfo
 
 
 ### IEBGENER
-IEBGENER is a utility in JCL used to copy data from one dataset to another, typically used for copying sequential datasets. It allows for optional data transformation, such as changing the record length or filtering specific data, during the copy process. The utility is commonly used for backup, report generation, or moving data between datasets in a system.
-Example:
-//JOBNAME  JOB (ACCT),'USER',CLASS=A,MSGCLASS=X
-//STEP1    EXEC PGM=IEBGENER
-//SYSPRINT DD   SYSOUT=*
-//SYSIN    DD   DUMMY
-//SYSUT1   DD   DSN=SOURCE.FILE,DISP=SHR
-//SYSUT2   DD   DSN=DEST.FILE,DISP=NEW,SPACE=(CYL,(1,1)),UNIT=SYSDA
 
-Explanation:
-STEP1 executes IEBGENER to copy data.
+IEBGENER is a utility in JCL used to copy data from one dataset to another, typically used for copying sequential datasets. It allows for optional data transformation, such as changing the record length or filtering specific data, during the copy process. The utility is commonly used for backup, report generation, or moving data between datasets in a system.
+
+**Example:**
+
+``` //JOBNAME  JOB (ACCT),'USER',CLASS=A,MSGCLASS=X ```
+
+``` //STEP1    EXEC PGM=IEBGENER ```
+
+``` //SYSPRINT DD   SYSOUT=* ```
+
+``` //SYSIN    DD   DUMMY ```
+
+``` //SYSUT1   DD   DSN=SOURCE.FILE,DISP=SHR ```
+
+``` //SYSUT2   DD   DSN=DEST.FILE,DISP=NEW,SPACE=(CYL,(1,1)),UNIT=SYSDA ```
+
+**Explanation:**
+
+' STEP1 executes IEBGENER to copy data. '
 SYSUT1 is the input dataset (SOURCE.FILE), which is opened in shared mode (DISP=SHR).
 SYSUT2 is the output dataset (DEST.FILE), created with new space allocation (DISP=NEW).
 SYSPRINT is the output report, which shows the utility’s status.
