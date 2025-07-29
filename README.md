@@ -617,7 +617,7 @@ Creating a new dataset in JCL involves using a DD statement with DISP=NEW to ind
 
 ``` //             UNIT=SYSDA,SPACE=(TRK,(10,5)),DCB=(RECFM=FB,LRECL=80) ```
 
-**Using a Temporary Dataset**
+### Using a Temporary Dataset**
 Using a temporary dataset in JCL is done by specifying a dataset name starting with && in the DSN parameter, such as DSN=&&TEMP. These datasets exist only for the duration of the job and are automatically deleted when the job ends. You must specify DISP=(NEW,DELETE) along with UNIT and SPACE to allocate storage. Temporary datasets are often used to pass intermediate data between steps within the same job. They are not cataloged and reduce the need for permanent storage management.
 
 
@@ -652,72 +652,98 @@ In-stream data in JCL allows you to include input data directly within the job s
 
 
 
- Example JCL Block (Putting It Together)
-//MYJOB JOB (123),'DEMO JOB',CLASS=A,MSGCLASS=X
-//STEP01 EXEC PGM=IEBGENER
-//SYSPRINT DD SYSOUT=*
-//SYSIN    DD DUMMY
-//SYSUT1   DD DSN=INPUT.FILE,DISP=SHR
-//SYSUT2   DD DSN=OUTPUT.FILE,DISP=(NEW,CATLG,DELETE),
-//            SPACE=(TRK,(5,5)),UNIT=SYSDA
-•	This job runs the IEBGENER utility to copy INPUT.FILE to OUTPUT.FILE.
-•	SYSIN DD DUMMY means no control statements are provided (IEBGENER can use defaults).
-DISP Parameter:
+ **Example JCL Block (Putting It Together)**
+ 
+``` //MYJOB JOB (123),'DEMO JOB',CLASS=A,MSGCLASS=X ```
+
+``` //STEP01 EXEC PGM=IEBGENER ```
+
+``` //SYSPRINT DD SYSOUT=* ```
+
+``` //SYSIN    DD DUMMY ```
+
+``` //SYSUT1   DD DSN=INPUT.FILE,DISP=SHR ```
+
+``` //SYSUT2   DD DSN=OUTPUT.FILE,DISP=(NEW,CATLG,DELETE), ```
+
+``` //            SPACE=(TRK,(5,5)),UNIT=SYSDA ```
+
+
+- This job runs the IEBGENER utility to copy INPUT.FILE to OUTPUT.FILE.
+- SYSIN DD DUMMY means no control statements are provided (IEBGENER can use defaults).
+  
+**DISP Parameter:**
 The DISP (Disposition) parameter in JCL defines the status and handling of a dataset during and after job execution. It typically has three sub-parameters: the dataset status (e.g., NEW, OLD, MOD, SHR), what to do if the step ends normally (e.g., CATLG, KEEP), and what to do if it ends abnormally (e.g., DELETE). This helps the system manage dataset retention, cataloging, or deletion based on the success or failure of the job step.
-DISP Value	Meaning
-DISP=OLD	Dataset already exists; exclusive use.
-DISP=SHR	Dataset already exists; shared access.
-DISP=MOD	Opens existing dataset for append; creates new if it doesn’t exist.
-DISP=NEW	Creates a new dataset.
-DISP=(NEW,CATLG,DELETE)	Create new dataset; catalog it if job succeeds; delete if job fails.
-DISP=(NEW,DELETE,DELETE)	Create new dataset; delete it whether job succeeds or fails.
-DISP=(OLD,KEEP,KEEP)	Use existing dataset; keep it regardless of job outcome.
-DISP=(MOD,CATLG,DELETE)	Append or create dataset; catalog on success, delete on failure.
-DISP=(OLD,DELETE,DELETE)	To delete a dataset using the DISP parameter, deletion regardless of job success or failure.
+
+| **DISP Value**                  | **Meaning** |
+|--------------------------------|-------------|
+| `DISP=OLD`                     | Dataset already exists; exclusive use. |
+| `DISP=SHR`                     | Dataset already exists; shared access. |
+| `DISP=MOD`                     | Opens existing dataset for append; creates new if it doesn’t exist. |
+| `DISP=NEW`                     | Creates a new dataset. |
+| `DISP=(NEW,CATLG,DELETE)`      | Create new dataset; catalog it if job succeeds; delete if job fails. |
+| `DISP=(NEW,DELETE,DELETE)`     | Create new dataset; delete it whether job succeeds or fails. |
+| `DISP=(OLD,KEEP,KEEP)`         | Use existing dataset; keep it regardless of job outcome. |
+| `DISP=(MOD,CATLG,DELETE)`      | Append or create dataset; catalog on success, delete on failure. |
+| `DISP=(OLD,DELETE,DELETE)`     | To delete a dataset using the DISP parameter; deletion regardless of job success or failure. |
 
 
-SPACE:
+
+**SPACE:**
 The SPACE parameter in JCL is used to allocate disk space for a dataset. It specifies how much space is needed, the unit of space (like cylinders or tracks), and optionally the directory blocks for partitioned datasets. Its format is typically SPACE=(unit,(primary,secondary),RLSE) where unit can be CYL (cylinders) or TRK (tracks). Primary is the initial amount of space to allocate, and secondary is the extra space allocated if the primary is exhausted. RLSE (optional) tells the system to release any unused space after allocation.SPACE=(CYL,(5,5),RLSE) 
+
 
 RLSE: release unused space after step
 
-space allocation units
-•	TRK (Track)
-•	CYL (Cylinder)
-•	BLK (Block)
-•	AVE (Average Block)
+
+**Space allocation units**
+- TRK (Track)
+- CYL (Cylinder)
+- BLK (Block)
+- AVE (Average Block)
 
 
-Unit	Meaning	Level	Use Case	Example
-TRK	Track on a disk	Physical Unit	Precise allocation for smaller datasets	SPACE=(TRK,(10,5))
-CYL	Cylinder (group of tracks)	Physical Unit	Larger datasets needing more space	SPACE=(CYL,(5,2))
-BLK	Block (logical data block)	Logical Unit	Used when block size is known	SPACE=(BLK,(500,100))
-AVE	Average block size	Logical Estimate	Estimated space when block size may vary	AVGREC=U with SPACE=(TRK,...)
+  | **Unit** | **Meaning**               | **Level**        | **Use Case**                             | **Example**                  |
+|----------|---------------------------|------------------|------------------------------------------|------------------------------|
+| `TRK`    | Track on a disk           | Physical Unit    | Precise allocation for smaller datasets  | `SPACE=(TRK,(10,5))`         |
+| `CYL`    | Cylinder (group of tracks)| Physical Unit    | Larger datasets needing more space       | `SPACE=(CYL,(5,2))`          |
+| `BLK`    | Block (logical data block)| Logical Unit     | Used when block size is known            | `SPACE=(BLK,(500,100))`      |
+| `AVE`    | Average block size        | Logical Estimate | Estimated space when block size may vary | `AVGREC=U` with `SPACE=(TRK,...)` |
 
-DCB:
+
+
+
+**DCB:**
 DCB (Data Control Block) in JCL defines the attributes of a dataset, such as its organization, record format, and record length. It is used to provide detailed instructions to the operating system on how to handle a dataset, including its structure and access methods. DCB parameters can be specified either explicitly in the DD statement or implicitly through system defaults.
-DCB=(RECFM=FB,LRECL=80,BLKSIZE=800)
-•	RECFM: Record format (FB - fixed block, VB - variable block)
-•	LRECL: Logical record length
-•	BLKSIZE: Physical block size, default value zero.
+
+``` DCB=(RECFM=FB,LRECL=80,BLKSIZE=800) ```
+
+- RECFM: Record format (FB - fixed block, VB - variable block)
+- LRECL: Logical record length
+- BLKSIZE: Physical block size, default value zero.
 
 
-Commonly used record format
-Record Format	Description	Usage
-FB (Fixed Block)	A fixed-length record format where each record is of a constant length. The record length is defined in the DD statement.	Most commonly used format, especially for sequential datasets.
-F (Fixed)	Similar to FB, where each record is of a fixed length. However, F is a specific term used for fixed-length records.	Common in datasets where the record length is predetermined.
-FBA (Fixed Block Aligned)	A fixed-length record format, but with the record length aligned to a specific byte boundary (typically 4 or 8 bytes).	Used for data that requires alignment (e.g., for performance in certain environments).
-VB (Variable Block)	Records of varying lengths, with each record prefixed by a 4-byte field that indicates the record's length.	Used for datasets with variable-length records (e.g., COBOL data files).
-VBA (Variable Block Aligned)	Similar to VB, but records are aligned to a specific byte boundary (usually 4 or 8 bytes).	Used when variable-length records need to be aligned for performance reasons.
-VBS (Variable Block Spanned)	Similar to VB, but a single record can span multiple blocks. It uses a 4-byte length field.	Used for datasets where records might span multiple blocks (e.g., large reports).
+***Commonly used record format***
 
-LRECL (Logical Record Length) specifies the length of each record in a dataset, including both fixed and variable length formats. It is used to define the maximum number of characters (bytes) that can appear in a single record. The LRECL value is essential for the operating system to manage and allocate space properly during input/output operations, ensuring that records are read and written correctly.
-BLKSIZE (Block Size) specifies the number of bytes that are grouped together in a block on disk when storing dataset records. It is used to determine how many logical records will fit into a physical block of storage, influencing disk I/O performance. Properly setting the BLKSIZE can optimize data transfer rates, reduce the number of read/write operations, and improve overall performance when accessing datasets.
-
+| **Record Format** | **Description**                                                                                  | **Usage** |
+|-------------------|--------------------------------------------------------------------------------------------------|-----------|
+| `FB` (Fixed Block)        | A fixed-length record format where each record is of a constant length. The record length is defined in the DD statement. | Most commonly used format, especially for sequential datasets. |
+| `F` (Fixed)               | Similar to FB, where each record is of a fixed length. However, F is a specific term used for fixed-length records. | Common in datasets where the record length is predetermined. |
+| `FBA` (Fixed Block Aligned) | A fixed-length record format, but with the record length aligned to a specific byte boundary (typically 4 or 8 bytes). | Used for data that requires alignment (e.g., for performance in certain environments). |
+| `VB` (Variable Block)     | Records of varying lengths, with each record prefixed by a 4-byte field that indicates the record's length. | Used for datasets with variable-length records (e.g., COBOL data files). |
+| `VBA` (Variable Block Aligned) | Similar to VB, but records are aligned to a specific byte boundary (usually 4 or 8 bytes). | Used when variable-length records need to be aligned for performance reasons. |
+| `VBS` (Variable Block Spanned) | Similar to VB, but a single record can span multiple blocks. It uses a 4-byte length field. | Used for datasets where records might span multiple blocks (e.g., large reports). |
 
 
-Formula to calculate BLKSIZE
-BLKSIZE=LRECL×Number of Records per Block\text{BLKSIZE} = \text{LRECL} \times \text{Number of Records per Block}BLKSIZE=LRECL×Number of Records per Block 
+
+**LRECL (Logical Record Length):** specifies the length of each record in a dataset, including both fixed and variable length formats. It is used to define the maximum number of characters (bytes) that can appear in a single record. The LRECL value is essential for the operating system to manage and allocate space properly during input/output operations, ensuring that records are read and written correctly.
+
+**BLKSIZE (Block Size):** specifies the number of bytes that are grouped together in a block on disk when storing dataset records. It is used to determine how many logical records will fit into a physical block of storage, influencing disk I/O performance. Properly setting the BLKSIZE can optimize data transfer rates, reduce the number of read/write operations, and improve overall performance when accessing datasets.
+
+
+**Formula to calculate BLKSIZE**
+
+``` BLKSIZE=LRECL×Number of Records per Block\text{BLKSIZE} = \text{LRECL} \times \text{Number of Records per Block}BLKSIZE=LRECL×Number of Records per Block ``` 
 Where:
 LRECL is the logical record length (the size of each record in bytes).
 Number of Records per Block is the number of records that will be placed in a single block.
