@@ -1547,41 +1547,66 @@ Running queries, updating tables, or loading data into DB2/IMS databases.
 
 
 ## Best Practices
- Use Meaningful Job and Step Names
-•	Use clear and descriptive names for JOB and EXEC steps to improve readability and traceability.
-//LOADCSV  JOB ...
-//SORTDATA EXEC PGM=SORT
+ 
+ **Use Meaningful Job and Step Names**
+ 
+Use clear and descriptive names for JOB and EXEC steps to improve readability and traceability.
 
- Always Specify NOTIFY Parameter
-•	Helps inform the user upon job completion or failure.
-//MYJOB JOB ...,NOTIFY=&SYSUID
+``` //LOADCSV  JOB ... ```
 
-Use COND or IF/THEN/ELSE for Conditional Execution
-•	Prevents unnecessary or failing steps from running.
-// IF (STEP1.RC = 0) THEN
-//   EXEC PGM=STEP2
-// ENDIF
-
-Check and Use Return Codes Properly
-•	Monitor RCs (Return Codes) to manage job logic and error responses intelligently.
+``` //SORTDATA EXEC PGM=SORT ```
 
 
- Use Dataset Disposition (DISP) Correctly
-•	Prevent accidental deletion or dataset contention.
-//DD1 DD DSN=MY.DATA,DISP=(NEW,CATLG,DELETE)
+**Always Specify NOTIFY Parameter**
 
-Limit Use of /* (Null Statements)
-•	Don’t overuse or misuse null statements; they can end in-stream data prematurely or confuse readers.
+Helps inform the user upon job completion or failure.
 
- Include Comments for Clarity
-•	Use //* to document job purpose, inputs, and important steps.
-//STEP01 EXEC PGM=XYZ
-//* This step processes customer orders
 
- Use Utility Programs Effectively
-•	Leverage tools like IEBGENER, SORT, IDCAMS, IKJEFT01, etc., for efficient data handling.
+``` //MYJOB JOB ...,NOTIFY=&SYSUID ```
+
+
+**Use COND or IF/THEN/ELSE for Conditional Execution**
+
+Prevents unnecessary or failing steps from running.
+
+``` // IF (STEP1.RC = 0) THEN ```
+
+``` //   EXEC PGM=STEP2 ```
+
+``` // ENDIF ```
+
+
+**Check and Use Return Codes Properly:** 
+
+Monitor RCs (Return Codes) to manage job logic and error responses intelligently.
+
+
+**Use Dataset Disposition (DISP) Correctly**
+
+Prevent accidental deletion or dataset contention.
+
+``` //DD1 DD DSN=MY.DATA,DISP=(NEW,CATLG,DELETE) ```
+
+
+**Limit Use of // (Null Statements)**
+
+Don’t overuse or misuse null statements; they can end in-stream data prematurely or confuse readers.
+
+ **Include Comments for Clarity**
+ 
+Use //* to document job purpose, inputs, and important steps.
+
+``` //STEP01 EXEC PGM=XYZ ```
+
+``` //* This step processes customer orders ```
+
+
+ **Use Utility Programs Effectively**
+ 
+Leverage tools like IEBGENER, SORT, IDCAMS, IKJEFT01, etc., for efficient data handling.
 
 Keep Dataset Names and Parameters Within Syntax Limits
-•	JCL keywords, dataset names, and parameters must follow format restrictions (e.g., 8-character step names, 44-character DSNs).
+
+JCL keywords, dataset names, and parameters must follow format restrictions (e.g., 8-character step names, 44-character DSNs).
 
 
