@@ -6,6 +6,22 @@
 [![JCL](https://img.shields.io/badge/Language-JCL-green)](https://github.com/vishak14/Mastering-JCL-A-Complete-Mainframe-Reference)
 [![License](https://img.shields.io/badge/License-MIT-orange)](https://github.com/vishak14/Mastering-JCL-A-Complete-Mainframe-Reference/blob/main/LICENSE)
 
+---
+
+## Overview
+
+This repository is a **complete reference for Job Control Language (JCL)**, used on **IBM mainframes (z/OS)** to manage batch jobs, datasets, and system resources. It is designed for **mainframe developers, IT professionals, and students** who want a practical and comprehensive guide to JCL.  
+
+**What you will learn:**
+- JCL syntax, structure, and core statements  
+- Dataset handling and resource allocation  
+- Procedures, symbolic parameters, and conditional execution  
+- Common utilities: IEFBR14, IEBGENER, IEBCOPY, IDCAMS, SORT  
+- VSAM datasets: KSDS, ESDS, RRDS, LSDS  
+- Error handling, debugging, and real-world batch scenarios  
+- Best practices for writing efficient JCL  
+
+---
 
 ## Job Control Language
 ### Table of Contents
