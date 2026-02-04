@@ -1,3 +1,11 @@
+# Mastering JCL - A Complete Mainframe Reference
+
+**Comprehensive Guide to Job Control Language (JCL) for IBM Mainframes**
+
+![Mainframe](https://img.shields.io/badge/Platform-Mainframe-blue)
+![JCL](https://img.shields.io/badge/Language-JCL-green)
+![License](https://img.shields.io/badge/License-MIT-orange)
+
 # Mastering JCL A Complete Mainframe Reference
 **Comprehensive Guide to Job Control Language (JCL) for IBM Mainframes**
 ## Job Control Language
